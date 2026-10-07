@@ -17,6 +17,8 @@
 <link rel="stylesheet" href="css/style.css">
 <script src="js/template-images.js" defer></script>
 <script src="js/templates.js" defer></script>
+<script src="js/vendor/qrcode.js" defer></script>
+<script src="js/vendor/peerjs.min.js" defer></script>
 <script src="js/app.js" defer></script>
 </head>
 <body data-view="home">
@@ -114,7 +116,7 @@
         <div class="cam" id="cam">
           <video id="video" autoplay playsinline muted></video>
           <div class="hint" id="hint"><b>📷</b>Izinkan akses kamera saat browser meminta, atau unggah foto.</div>
-          <div id="pose"></div><div id="count" aria-live="assertive"></div><div id="flash"></div>
+          <button class="sm" id="btnCancel" type="button">✕ Batal</button><div id="pose"></div><div id="count" aria-live="assertive"></div><div id="flash"></div>
         </div>
         <div class="row">
           <button class="sm" id="btnCam">Nyalakan kamera</button>
@@ -127,10 +129,10 @@
         <div class="between"><h2>Foto kamu</h2><span class="muted" id="prog">0/0</span></div>
         <div class="bar2"><i id="barI"></i></div>
         <div class="slots" id="thumbs"></div>
-        <p class="muted tiny">Ketuk nomor foto untuk mengulang satu foto saja.</p>
+        <p class="muted tiny">Mau mengulang? Ketuk tombol ✕ di pojok foto, atau pakai tombol Ulang foto terakhir.</p>
         <div class="between"><h3>⏱️ Timer</h3><div class="seg"><button data-timer="3">3 detik</button><button data-timer="5">5 detik</button></div></div>
         <button class="pri lg" id="btnAuto" disabled>📸 Mulai jepret</button>
-        <button class="sm ghost" id="btnReset">Hapus semua foto</button>
+        <div class="between"><button class="sm" id="btnRetakeLast" disabled>↻ Ulang foto terakhir</button><button class="sm ghost" id="btnReset">Hapus semua foto</button></div>
       </div>
     </div>
     <div class="actions"><button data-go="setup">← Layout</button><button class="pri" id="btnNext" data-go="edit" disabled>Lanjut hias →</button></div>
@@ -156,7 +158,15 @@
       <figure class="card"><figcaption>🎞️ GIF</figcaption><div class="gifbox" id="gifBox"></div>
         <div class="row"><button class="pri sm" id="btnGif" disabled>Unduh GIF</button></div></figure>
     </div>
-    <div class="actions center"><button class="sm" data-go="edit">← Edit lagi</button><button class="sm" id="btnAlbum">💾 Simpan ke album</button><button class="sm" data-go="album">🖼️ Lihat album</button><button class="pri sm" id="btnNew">Foto baru ✨</button></div>
+    <div class="actions center"><button class="pri sm" id="btnQR">📱 Kirim ke HP (QR)</button><button class="sm" data-go="edit">← Edit lagi</button><button class="sm" id="btnAlbum">💾 Simpan ke album</button><button class="sm" data-go="album">🖼️ Lihat album</button><button class="pri sm" id="btnNew">Foto baru ✨</button></div>
+  </section>
+
+  <section id="v-terima" class="view" hidden>
+    <div class="pagehead"><h1>📲 Terima foto</h1><p id="recvStat" class="qrstat">Menghubungkan…</p></div>
+    <div class="bar2"><i id="recvBar"></i></div>
+    <div class="results" id="recvItems" style="margin-top:16px"></div>
+    <p class="hint2">Di iPhone: kalau tombol Simpan tidak langsung menyimpan, tekan lama gambarnya lalu pilih "Simpan ke Foto".</p>
+    <div class="actions"><button data-go="home">Ke beranda</button><button class="pri" data-go="setup">Foto sendiri 📸</button></div>
   </section>
 
   <section id="v-album" class="view" hidden>
@@ -173,6 +183,17 @@
   <p class="tiny">© 2026 Twinkle Cam</p>
 </footer>
 
+<div id="qrModal" class="modal" role="dialog" aria-modal="true" aria-label="Kirim ke HP">
+  <div class="card qr">
+    <h2>📱 Kirim ke HP</h2>
+    <p class="muted">Pindai QR dengan kamera HP untuk menyimpan foto, video, dan GIF. File dikirim langsung antar perangkat.</p>
+    <canvas id="qrCanvas" width="280" height="280" aria-label="Kode QR"></canvas>
+    <p class="qrstat" id="qrStat">Menyiapkan…</p>
+    <div class="row"><input type="text" id="qrLink" readonly aria-label="Link"><button class="sm" id="qrCopy">Salin link</button></div>
+    <p class="tiny muted">Jangan tutup halaman ini sebelum unduhan di HP selesai. Foto tidak diunggah ke server. Layanan PeerJS hanya mempertemukan dua perangkat.</p>
+    <button class="sm" id="qrClose">Tutup</button>
+  </div>
+</div>
 <div id="viewer" role="dialog" aria-modal="true" aria-label="Lihat foto">
   <div class="card">
     <div class="seg" id="vTabs" hidden></div>

@@ -1,6 +1,6 @@
 /* Twinkle Cam service worker: app bisa dibuka offline. Naikkan angka V saat ada update besar. */
-const V='twinkle-v6';
-const SHELL=['./','index.html','css/style.css','js/app.js','js/templates.js','js/template-images.js','favicon.svg','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
+const V='twinkle-v7';
+const SHELL=['./','index.html','css/style.css','js/app.js','js/templates.js','js/template-images.js','js/vendor/qrcode.js','js/vendor/peerjs.min.js','favicon.svg','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
