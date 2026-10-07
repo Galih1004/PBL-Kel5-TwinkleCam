@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Twinkle Cam: photobooth online gratis dengan bingkai, filter, stiker, serta hasil foto, video, dan GIF. Tanpa daftar, tanpa aplikasi.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#6c5ce7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Twinkle Cam">
+<title>Twinkle Cam | Photobooth Online Gratis & Estetik</title>
+<script>try{var t=localStorage.getItem('tc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Caveat:wght@700&family=Fredoka:wght@600;700&family=Outfit:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/template-images.js" defer></script>
+<script src="js/templates.js" defer></script>
+<script src="js/app.js" defer></script>
+</head>
+<body data-view="home">
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="#/home"><img src="favicon.svg" alt="" width="30" height="30">Twinkle Cam</a>
+    <nav class="links" aria-label="Menu utama"><a href="#/home">Beranda</a><a href="#/album">Album</a></nav>
+    <div class="tools">
+      <button class="icon" id="btnTheme" aria-label="Ganti tema terang atau gelap" title="Ganti tema">🌓</button>
+      <button class="pri sm" data-go="setup">Mulai foto</button>
+    </div>
+  </div>
+  <ol class="stepper" id="steps" aria-label="Langkah">
+    <li><b>1</b><span>Pilih</span></li><li><b>2</b><span>Jepret</span></li><li><b>3</b><span>Hias</span></li><li><b>4</b><span>Simpan</span></li>
+  </ol>
+</header>
+
+<div class="notice" id="fileNote" hidden><span>Kamu membuka web langsung dari folder. Kamera dan beberapa fitur bisa terbatas. Sebaiknya buka lewat hosting (Vercel) atau jalankan <code>npx serve</code> di folder ini.</span><button class="sm" onclick="this.parentNode.hidden=true">Tutup</button></div>
+<main>
+  <section id="v-home" class="view">
+    <div class="hero2">
+      <div class="mocks" aria-hidden="true">
+        <div class="mock strip"><i style="--g:linear-gradient(135deg,#8fd3ff,#ffb3d6)">🙂</i><i style="--g:linear-gradient(135deg,#ffd166,#ff9ad0)">😎</i><i style="--g:linear-gradient(135deg,#7ce0a3,#8fd3ff)">🥳</i><span>Twinkle Cam ✨</span></div>
+        <div class="mock pol"><i style="--g:linear-gradient(135deg,#c9b6ff,#ffb3d6)">🦋</i><span>besties 💜</span></div>
+        <span class="sp s1">✦</span><span class="sp s2">✦</span><span class="sp s3">✦</span>
+      </div>
+      <div class="hero-c">
+        <span class="badge">✨ Gratis · Tanpa daftar · Tanpa aplikasi</span>
+        <h1>Photobooth online<span class="l2">yang bikin</span><em>momenmu berkilau</em></h1>
+        <p class="lead">Pilih bingkai, jepret bareng teman, hias dengan filter dan stiker, lalu simpan sebagai foto, video, dan GIF.</p>
+        <div class="cta"><button class="pri xl" data-go="setup">📸 Mulai foto sekarang</button><button class="xl" data-go="album">🖼️ Album saya</button></div>
+        <div class="cta"><button class="sm" id="btnInstall" hidden>📲 Pasang aplikasi</button></div>
+        <p class="hint2" id="iosHint" hidden>Di iPhone: ketuk tombol Bagikan lalu pilih "Tambah ke Layar Utama" untuk memasang.</p>
+        <p class="trust">🔒 Foto diproses di perangkatmu dan tidak diunggah ke server.</p>
+      </div>
+    </div>
+
+    <div class="ticker" aria-hidden="true"><div class="track">
+      <span>🪩 Y2K glow</span><span>🎀 Coquette</span><span>🧋 Boba</span><span>📰 Koran</span><span>🎞️ Film 90an</span><span>💿 Polaroid vinyl</span><span>🦋 Stiker viral</span><span>🌙 Lebaran</span><span>🎂 Ulang tahun</span><span>📷 Kamera denim</span><span>💜 K-pop</span><span>🌌 Langit bintang</span>
+      <span>🪩 Y2K glow</span><span>🎀 Coquette</span><span>🧋 Boba</span><span>📰 Koran</span><span>🎞️ Film 90an</span><span>💿 Polaroid vinyl</span><span>🦋 Stiker viral</span><span>🌙 Lebaran</span><span>🎂 Ulang tahun</span><span>📷 Kamera denim</span><span>💜 K-pop</span><span>🌌 Langit bintang</span>
+    </div></div>
+
+    <div class="stats">
+      <div><b id="stF">18</b><span>Bingkai</span></div><div><b id="stI">12</b><span>Filter tren</span></div>
+      <div><b id="stT">5</b><span>Template</span></div><div><b>3</b><span>Foto, video, GIF</span></div>
+    </div>
+
+    <div class="sec">
+      <h2 class="big">Cara kerjanya</h2><p class="sub">Empat langkah singkat, tanpa ribet.</p>
+      <div class="how">
+        <div class="card"><span class="num">1</span><h3>Pilih</h3><p>Pilih tata letak atau template bingkai, lalu atur timer 3 atau 5 detik.</p></div>
+        <div class="card"><span class="num">2</span><h3>Jepret</h3><p>Hitung mundur otomatis plus ide pose lucu supaya tidak kaku.</p></div>
+        <div class="card"><span class="num">3</span><h3>Hias</h3><p>Ganti bingkai, filter, dan stiker. Pratinjau langsung berubah.</p></div>
+        <div class="card"><span class="num">4</span><h3>Simpan</h3><p>Unduh foto, video, dan GIF, atau simpan ke album di perangkatmu.</p></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2 class="big">Template favorit</h2><p class="sub">Ketuk salah satu untuk langsung dipakai.</p>
+      <div class="gal" id="gal"></div>
+    </div>
+
+    <div class="sec">
+      <h2 class="big">Kenapa Twinkle Cam?</h2>
+      <div class="feat">
+        <div class="card"><b>🪩 Filter tren</b><p>Y2K glow, Korea soft, Film 90an, dan lainnya.</p></div>
+        <div class="card"><b>🎀 Stiker bisa digeser</b><p>Tempel, besarkan, dan putar stiker sesukamu.</p></div>
+        <div class="card"><b>🎬 Video dan GIF</b><p>Hasil bergerak yang halus untuk dibagikan.</p></div>
+        <div class="card"><b>🖨️ Siap cetak</b><p>Ukuran 2×6, 4R, dan 3×4 inci.</p></div>
+        <div class="card"><b>🔒 Privat</b><p>Semua diproses di perangkatmu, tanpa akun.</p></div>
+        <div class="card"><b>📲 Bisa offline</b><p>Pasang di layar utama dan buka kapan saja.</p></div>
+      </div>
+    </div>
+
+    <div class="band"><h2>Siap bergaya? ✨</h2><p>Buka kamera dan buat momen berkilau pertamamu sekarang.</p><button class="lg" data-go="setup">Coba sekarang</button></div>
+  </section>
+
+  <section id="v-setup" class="view" hidden>
+    <div class="pagehead"><h1>Pilih gaya fotomu</h1><p>Tentukan tata letak dan timer. Bingkai, filter, dan stiker bisa diubah nanti.</p></div>
+    <div class="card">
+      <div class="seg wide" role="group" aria-label="Jenis"><button id="tabLay" aria-pressed="true">🧩 Tata letak</button><button id="tabTpl" aria-pressed="false">🖼️ Template bingkai</button></div>
+      <div class="lays" id="lays"></div>
+      <div class="lays tpls" id="tpls" hidden></div>
+    </div>
+    <div class="card mt between">
+      <div><h3>⏱️ Timer jepret</h3><p class="muted">Jeda sebelum tiap foto diambil</p></div>
+      <div class="seg"><button data-timer="3">3 detik</button><button data-timer="5">5 detik</button></div>
+    </div>
+    <div class="actions"><button data-go="home">← Kembali</button><button class="pri" data-go="shoot">Lanjut ke kamera →</button></div>
+  </section>
+
+  <section id="v-shoot" class="view" hidden>
+    <div class="shoot">
+      <div class="card">
+        <div class="cam" id="cam">
+          <video id="video" autoplay playsinline muted></video>
+          <div class="hint" id="hint"><b>📷</b>Izinkan akses kamera saat browser meminta, atau unggah foto.</div>
+          <div id="pose"></div><div id="count" aria-live="assertive"></div><div id="flash"></div>
+        </div>
+        <div class="row">
+          <button class="sm" id="btnCam">Nyalakan kamera</button>
+          <label class="btn sm" for="file">📁 Unggah foto</label><input id="file" type="file" accept="image/*" multiple hidden>
+          <button class="chip" id="btnTips" aria-pressed="true">💡 Ide pose: nyala</button>
+          <button class="chip" id="btnMirror" aria-pressed="true">🪞 Cermin: nyala</button>
+        </div>
+      </div>
+      <div class="card side">
+        <div class="between"><h2>Foto kamu</h2><span class="muted" id="prog">0/0</span></div>
+        <div class="bar2"><i id="barI"></i></div>
+        <div class="slots" id="thumbs"></div>
+        <p class="muted tiny">Ketuk nomor foto untuk mengulang satu foto saja.</p>
+        <div class="between"><h3>⏱️ Timer</h3><div class="seg"><button data-timer="3">3 detik</button><button data-timer="5">5 detik</button></div></div>
+        <button class="pri lg" id="btnAuto" disabled>📸 Mulai jepret</button>
+        <button class="sm ghost" id="btnReset">Hapus semua foto</button>
+      </div>
+    </div>
+    <div class="actions"><button data-go="setup">← Layout</button><button class="pri" id="btnNext" data-go="edit" disabled>Lanjut hias →</button></div>
+  </section>
+
+  <section id="v-edit" class="view" hidden>
+    <div class="stage"><canvas id="strip" aria-label="Pratinjau hasil"></canvas></div>
+    <div class="panel card">
+      <div class="chips" id="tabs"></div>
+      <div class="opts" id="opts"></div>
+      <div class="actions in"><button class="sm" data-go="shoot">← Foto</button><button class="pri" data-go="result">Simpan hasil →</button></div>
+    </div>
+  </section>
+
+  <section id="v-result" class="view" hidden>
+    <div class="pagehead"><h1>Hasil kamu siap! 🎉</h1><p>Unduh sesukamu, simpan ke album, atau bagikan ke teman.</p></div>
+    <div class="results">
+      <figure class="card"><figcaption>📷 Foto</figcaption><div class="gifbox"><img id="out" alt="Hasil foto"></div>
+        <label class="size">Ukuran unduhan <select id="size"><option value="0">Asli (untuk layar)</option><option value="600x1800">Strip 2×6 inci (600×1800)</option><option value="1200x1800">Kartu 4R / 4×6 inci (1200×1800)</option><option value="900x1200">Kartu 3×4 inci (900×1200)</option></select></label>
+        <div class="row"><button class="pri sm" id="btnSave">Unduh PNG</button><button class="sm" id="btnShare">Bagikan</button></div></figure>
+      <figure class="card"><figcaption>🎬 Video (<span id="vidExt">WebM</span>)</figcaption><div class="gifbox" id="vidBox"></div>
+        <div class="row"><button class="pri sm" id="btnVid" disabled>Unduh video</button></div></figure>
+      <figure class="card"><figcaption>🎞️ GIF</figcaption><div class="gifbox" id="gifBox"></div>
+        <div class="row"><button class="pri sm" id="btnGif" disabled>Unduh GIF</button></div></figure>
+    </div>
+    <div class="actions center"><button class="sm" data-go="edit">← Edit lagi</button><button class="sm" id="btnAlbum">💾 Simpan ke album</button><button class="sm" data-go="album">🖼️ Lihat album</button><button class="pri sm" id="btnNew">Foto baru ✨</button></div>
+  </section>
+
+  <section id="v-album" class="view" hidden>
+    <div class="pagehead"><h1>🖼️ Album saya <small id="albumCount"></small></h1><p>Tersimpan di browser ini saja dan tidak diunggah ke mana pun. Kalau data browser dihapus, album ikut hilang, jadi unduh dulu hasil yang penting.</p></div>
+    <div id="albumEmpty" class="empty card" hidden>Belum ada foto 🌙<button class="pri" data-go="setup">Mulai foto</button></div>
+    <div class="album" id="albumGrid"></div>
+    <div class="actions"><button data-go="home">← Beranda</button></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <b class="brand2">✦ Twinkle Cam</b>
+  <p>Photobooth online gratis. Semua foto diproses langsung di perangkatmu.</p>
+  <p class="tiny">© 2026 Twinkle Cam</p>
+</footer>
+
+<div id="viewer" role="dialog" aria-modal="true" aria-label="Lihat foto">
+  <div class="card">
+    <div class="seg" id="vTabs" hidden></div>
+    <img id="vImg" alt="Foto dari album"><video id="vVid" controls loop playsinline hidden></video>
+    <div class="row"><button class="pri sm" id="vSave">Unduh</button><button class="sm" id="vDel">🗑️ Hapus</button><button class="sm" id="vClose">Tutup</button></div>
+  </div>
+</div>
+<div id="toast" role="status"></div>
+</body>
+</html>
