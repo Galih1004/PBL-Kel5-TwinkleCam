@@ -15,10 +15,29 @@
 <script>try{var t=localStorage.getItem('tc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Caveat:wght@700&family=Fredoka:wght@600;700&family=Outfit:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/extra.css">
 <script src="js/template-images.js" defer></script>
 <script src="js/templates.js" defer></script>
 <script src="js/vendor/qrcode.js" defer></script>
 <script src="js/vendor/peerjs.min.js" defer></script>
+<script src="js/config.js" defer></script>
+<script src="js/state.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/canvas.js" defer></script>
+<script src="js/gif.js" defer></script>
+<script src="js/video.js" defer></script>
+<script src="js/setup.js" defer></script>
+<script src="js/camera.js" defer></script>
+<script src="js/editor.js" defer></script>
+<script src="js/result.js" defer></script>
+<script src="js/album.js" defer></script>
+<script src="js/qrsend.js" defer></script>
+<script src="js/modes.js" defer></script>
+<script src="js/puzzle.js" defer></script>
+<script src="js/effects.js" defer></script>
+<script src="js/stickers.js" defer></script>
+<script src="js/capture.js" defer></script>
+<script src="js/remote.js" defer></script>
 <script src="js/app.js" defer></script>
 </head>
 <body data-view="home">
@@ -69,9 +88,9 @@
     <div class="sec">
       <h2 class="big">Cara kerjanya</h2><p class="sub">Empat langkah singkat, tanpa ribet.</p>
       <div class="how">
-        <div class="card"><span class="num">1</span><h3>Pilih</h3><p>Pilih tata letak atau template bingkai, lalu atur timer 3 atau 5 detik.</p></div>
+        <div class="card"><span class="num">1</span><h3>Pilih</h3><p>Pilih mode, tata letak atau template bingkai, lalu atur timer 3 atau 5 detik.</p></div>
         <div class="card"><span class="num">2</span><h3>Jepret</h3><p>Hitung mundur otomatis plus ide pose lucu supaya tidak kaku.</p></div>
-        <div class="card"><span class="num">3</span><h3>Hias</h3><p>Ganti bingkai, filter, dan stiker. Pratinjau langsung berubah.</p></div>
+        <div class="card"><span class="num">3</span><h3>Hias</h3><p>Ganti bingkai, filter, efek, dan stiker. Pratinjau langsung berubah.</p></div>
         <div class="card"><span class="num">4</span><h3>Simpan</h3><p>Unduh foto, video, dan GIF, atau simpan ke album di perangkatmu.</p></div>
       </div>
     </div>
@@ -88,6 +107,8 @@
         <div class="card"><b>🎀 Stiker bisa digeser</b><p>Tempel, besarkan, dan putar stiker sesukamu.</p></div>
         <div class="card"><b>🎬 Video dan GIF</b><p>Hasil bergerak yang halus untuk dibagikan.</p></div>
         <div class="card"><b>🖨️ Siap cetak</b><p>Ukuran 2×6, 4R, dan 3×4 inci.</p></div>
+        <div class="card"><b>🧩 Mode puzzle</b><p>Susun fotomu dari kepingan acak sebelum dipakai.</p></div>
+        <div class="card"><b>📱 ambil foto di HP</b><p>Scan QR, kamera HP dipakai untuk memotret di layar laptop.</p></div>
         <div class="card"><b>🔒 Privat</b><p>Semua diproses di perangkatmu, tanpa akun.</p></div>
         <div class="card"><b>📲 Bisa offline</b><p>Pasang di layar utama dan buka kapan saja.</p></div>
       </div>
@@ -98,7 +119,8 @@
 
   <section id="v-setup" class="view" hidden>
     <div class="pagehead"><h1>Pilih gaya fotomu</h1><p>Tentukan tata letak dan timer. Bingkai, filter, dan stiker bisa diubah nanti.</p></div>
-    <div class="card">
+    <div class="card" id="modeBox"></div>
+    <div class="card mt">
       <div class="seg wide" role="group" aria-label="Jenis"><button id="tabLay" aria-pressed="true">🧩 Tata letak</button><button id="tabTpl" aria-pressed="false">🖼️ Template bingkai</button></div>
       <div class="lays" id="lays"></div>
       <div class="lays tpls" id="tpls" hidden></div>

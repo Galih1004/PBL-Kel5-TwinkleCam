@@ -1,6 +1,6 @@
 /* Twinkle Cam service worker: app bisa dibuka offline. Naikkan angka V saat ada update besar. */
-const V='twinkle-v7';
-const SHELL=['./','index.html','css/style.css','js/app.js','js/templates.js','js/template-images.js','js/vendor/qrcode.js','js/vendor/peerjs.min.js','favicon.svg','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
+const V='twinkle-v8';
+const SHELL=['./','index.html','css/style.css','css/extra.css','js/template-images.js','js/templates.js','js/vendor/qrcode.js','js/vendor/peerjs.min.js','js/config.js','js/state.js','js/ui.js','js/canvas.js','js/gif.js','js/video.js','js/setup.js','js/camera.js','js/editor.js','js/result.js','js/album.js','js/qrsend.js','js/modes.js','js/puzzle.js','js/effects.js','js/stickers.js','js/capture.js','js/remote.js','js/app.js','favicon.svg','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{
