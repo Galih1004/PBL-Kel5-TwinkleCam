@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photobooth | Twinkle Cam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
+    <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
+</head>
+<body>
+    <header class="header" id="site-header"></header>
+
+    <main class="page booth">
+        <section class="booth__cam">
+            <h1 class="page__title">Photobooth</h1>
+            <div class="cam">
+                <video id="video" autoplay playsinline muted></video>
+                <div class="cam__msg" id="camMsg">Meminta akses kamera…</div>
+                <div class="cam__count" id="countdown" aria-live="assertive"></div>
+                <div class="cam__flash" id="flash"></div>
+                <div class="cam__progress" id="progress"></div>
+            </div>
+            <div class="booth__controls">
+                <button class="btn btn--cta" id="startBtn" type="button">Mulai jepret</button>
+                <button class="btn btn--outline" id="sampleBtn" type="button">Pakai foto contoh</button>
+            </div>
+            <h2 class="label">Filter</h2>
+            <div class="chips" id="filterChips"></div>
+            <h2 class="label">Template</h2>
+            <div class="chips" id="tplChips"></div>
+        </section>
+
+        <section class="booth__result">
+            <canvas id="strip" class="strip" aria-label="Hasil strip foto"></canvas>
+            <div class="booth__controls" id="actions" hidden>
+                <button class="btn btn--cta" id="downloadBtn" type="button">Unduh</button>
+                <button class="btn btn--outline" id="saveBtn" type="button">Simpan ke album</button>
+                <button class="btn btn--outline" id="retakeBtn" type="button">Ulangi</button>
+            </div>
+        </section>
+    </main>
+    <footer class="footer" id="site-footer"></footer>
+    <script src="js/layout.js"></script>
+    <script src="js/photobooth.js"></script>
+</body>
+</html>
