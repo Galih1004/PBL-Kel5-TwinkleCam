@@ -10,7 +10,7 @@ const FILTERS = {
     warm: { label: "Hangat",      css: "sepia(.35) saturate(1.3) brightness(1.05)" },
     soft: { label: "Lembut",      css: "brightness(1.1) contrast(.92) saturate(1.15)" },
 };
-const SAMPLES = [1, 2, 3, 4].map((n) => { const i = new Image(); i.src = `selfiecontoh${n}.jpg`; return i; });
+const SAMPLES = [1, 2, 3, 4].map((n) => { const i = new Image(); i.src = `assets/images/selfiecontoh${n}.jpg`; return i; });
 
 // Ukuran strip (px)
 const PHOTO_W = 520, PHOTO_H = 390, PAD = 40, GAP = 24;

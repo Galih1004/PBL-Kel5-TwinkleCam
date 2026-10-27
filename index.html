@@ -10,14 +10,14 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/pages.css">
     <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
+    <script>
+        /* Terapkan tema tersimpan sebelum render agar tidak berkedip */
+        try { document.documentElement.dataset.theme = localStorage.getItem("twinkle_theme") || "dark"; }
+        catch { document.documentElement.dataset.theme = "dark"; }
+    </script>
 </head>
 <body>
-    <header class="header" id="site-header">
-      <a href="index.html" class="brand" aria-label="Twinkle Cam, ke Beranda">
-        <img src="assets/images/logo.svg" alt="" width="40" height="40" class="brand__logo">
-        <span class="brand__name">Twinkle Cam</span>
-      </a>
-    </header>
+    <header class="header" id="site-header"></header>
 
     <main>
         <section class="hero" id="beranda">
@@ -40,20 +40,22 @@
                 <span class="sparkle sparkle--4" aria-hidden="true">✦</span>
                 <span class="sparkle sparkle--5" aria-hidden="true">✦</span>
 
-                <button class="polaroid" id="polaroid" type="button" aria-label="Klik untuk jepret foto berikutnya">
-                    <div class="polaroid__photo">
-                        <img src="assets/images/selfiecontoh1.jpg" alt="Foto besties" id="polaroidImg" />
-                        <span class="polaroid__flash" aria-hidden="true"></span>
-                    </div>
-                    <span class="polaroid__caption" id="polaroidCaption">besties</span>
+                <!-- Bingkai strip: klik untuk "cetak ulang" foto -->
+                <button class="frame" id="frame" type="button" aria-label="Klik untuk cetak ulang strip foto">
+                    <span class="frame__photo">
+                        <img src="assets/images/selfiecontoh2.jpg" alt="Selfie berempat" />
+                        <span class="frame__flash" aria-hidden="true"></span>
+                    </span>
+                    <span class="frame__photo">
+                        <img src="assets/images/selfiecontoh3.jpg" alt="Selfie di taman" />
+                        <span class="frame__flash" aria-hidden="true"></span>
+                    </span>
+                    <span class="frame__photo">
+                        <img src="assets/images/selfiecontoh4.jpg" alt="Selfie pose hati" />
+                        <span class="frame__flash" aria-hidden="true"></span>
+                    </span>
+                    <span class="frame__caption">Twinkle Cam <span class="frame__spark" aria-hidden="true">✦</span></span>
                 </button>
-
-                <div class="thumbs" id="thumbs" role="group" aria-label="Pilih foto contoh">
-                    <button class="thumb is-active" type="button" data-index="0" aria-label="Foto 1"><img src="assets/images/selfiecontoh1.jpg" alt="" /></button>
-                    <button class="thumb" type="button" data-index="1" aria-label="Foto 2"><img src="assets/images/selfiecontoh2.jpg" alt="" /></button>
-                    <button class="thumb" type="button" data-index="2" aria-label="Foto 3"><img src="assets/images/selfiecontoh3.jpg" alt="" /></button>
-                    <button class="thumb" type="button" data-index="3" aria-label="Foto 4"><img src="assets/images/selfiecontoh4.jpg" alt="" /></button>
-                </div>
             </div>
         </section>
 

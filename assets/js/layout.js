@@ -38,11 +38,16 @@
 
     const header = document.getElementById("site-header");
     header.innerHTML = `
-        <a href="index.html" class="logo" aria-label="Twinkle Cam, ke Beranda">
-            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.6"/></svg>
+        <a href="index.html" class="brand" aria-label="Twinkle Cam, ke Beranda">
+            <img src="assets/images/logo.jpg" alt="" width="40" height="40" class="brand__logo">
+            <span class="brand__name">Twinkle Cam</span>
         </a>
         <nav class="nav" id="nav" aria-label="Navigasi utama">${links}</nav>
         <div class="header__right">
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Mode terang" aria-pressed="false">
+                <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            </button>
             ${user ? '<button class="btn btn--outline" id="logout" type="button"></button>'
                    : '<a href="login.html" class="btn btn--outline">Login / Sign Up</a>'}
             <button class="menu-toggle" id="menuToggle" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
@@ -59,6 +64,17 @@
     toggle.addEventListener("click", () => {
         toggle.setAttribute("aria-expanded", nav.classList.toggle("is-open"));
     });
+
+    /* ---------- Ganti tema (gelap / terang) ---------- */
+    const root = document.documentElement;
+    const themeBtn = document.getElementById("themeToggle");
+    const syncTheme = () => themeBtn.setAttribute("aria-pressed", root.dataset.theme === "light");
+    themeBtn.addEventListener("click", () => {
+        root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
+        try { localStorage.setItem("twinkle_theme", root.dataset.theme); } catch {}
+        syncTheme();
+    });
+    syncTheme();
 
     /* ---------- Footer ---------- */
     document.getElementById("site-footer").innerHTML = `
