@@ -5,6 +5,6 @@ const frame = document.getElementById("frame");
 
 frame.addEventListener("click", () => {
     frame.classList.remove("is-shooting");
-    void frame.offsetWidth;            // restart animasi
+    void frame.offsetWidth; // restart animasi
     frame.classList.add("is-shooting");
 });

@@ -7,13 +7,19 @@ let openId = null;
 
 function render() {
     empty.hidden = albums.length > 0;
-    grid.innerHTML = albums.map((a) => {
-        const d = new Date(a.date).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
-        return `<button class="album-item" type="button" data-id="${a.id}">
+    grid.innerHTML = albums
+        .map((a) => {
+            const d = new Date(a.date).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+            });
+            return `<button class="album-item" type="button" data-id="${a.id}">
             <img src="${a.img}" alt="Strip foto ${d}">
             <span>${d} · ${a.tpl}</span>
         </button>`;
-    }).join("");
+        })
+        .join("");
 }
 
 grid.addEventListener("click", (e) => {
@@ -27,11 +33,15 @@ grid.addEventListener("click", (e) => {
 });
 
 document.getElementById("lbClose").addEventListener("click", () => box.close());
-box.addEventListener("click", (e) => { if (e.target === box) box.close(); });
+box.addEventListener("click", (e) => {
+    if (e.target === box) box.close();
+});
 document.getElementById("lbDelete").addEventListener("click", () => {
     albums = albums.filter((a) => a.id !== openId);
     TC.store.set("twinkle_albums", albums);
-    box.close(); render(); TC.toast("Foto dihapus");
+    box.close();
+    render();
+    TC.toast("Foto dihapus");
 });
 
 render();

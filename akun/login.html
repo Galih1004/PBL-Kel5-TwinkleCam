@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login | Twinkle Cam</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Pacifico&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="../assets/css/style.css" />
+        <link rel="stylesheet" href="../assets/css/pages.css" />
+        <link rel="icon" href="../assets/images/logo.jpg" type="image/jpeg" />
+        <script>
+            /* Terapkan tema tersimpan sebelum render agar tidak berkedip */
+            try {
+                document.documentElement.dataset.theme = localStorage.getItem("twinkle_theme") || "dark";
+            } catch {
+                document.documentElement.dataset.theme = "dark";
+            }
+        </script>
+    </head>
+    <body data-root="../">
+        <header class="header" id="site-header"></header>
+
+        <main class="page auth">
+            <div class="auth__card">
+                <div class="tabs" role="tablist">
+                    <button class="tab is-active" role="tab" data-mode="login" type="button">Login</button>
+                    <button class="tab" role="tab" data-mode="signup" type="button">Sign Up</button>
+                </div>
+                <form id="authForm" novalidate>
+                    <label class="field" id="nameField" hidden
+                        >Nama
+                        <input type="text" id="name" autocomplete="name" placeholder="Nama panggilanmu" />
+                    </label>
+                    <label class="field"
+                        >Email
+                        <input
+                            type="email"
+                            id="email"
+                            autocomplete="email"
+                            placeholder="kamu@email.com"
+                            required
+                        />
+                    </label>
+                    <label class="field"
+                        >Password
+                        <input
+                            type="password"
+                            id="password"
+                            autocomplete="current-password"
+                            placeholder="Minimal 6 karakter"
+                            required
+                        />
+                    </label>
+                    <p class="form-error" id="formError" role="alert"></p>
+                    <button class="btn btn--cta btn--block" type="submit" id="submitBtn">Login</button>
+                </form>
+                <p class="note">Versi demo: akun hanya disimpan di browser ini, belum terhubung ke server.</p>
+            </div>
+        </main>
+        <footer class="footer" id="site-footer"></footer>
+        <script src="../assets/js/layout.js"></script>
+        <script src="../assets/js/login.js"></script>
+    </body>
+</html>
