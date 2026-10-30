@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bikin Momenmu Berkilau | Twinkle Cam</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Pacifico&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <link rel="stylesheet" href="assets/css/pages.css" />
+        <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg" />
+        <script>
+            /* Terapkan tema tersimpan sebelum render agar tidak berkedip */
+            try {
+                document.documentElement.dataset.theme = localStorage.getItem("twinkle_theme") || "dark";
+            } catch {
+                document.documentElement.dataset.theme = "dark";
+            }
+        </script>
+    </head>
+    <body data-root="">
+        <header class="header" id="site-header"></header>
+
+        <main>
+            <section class="hero" id="beranda">
+                <div class="hero__text">
+                    <h1 class="hero__title">
+                        Photobooth online yang bikin
+                        <span class="hero__accent">momenmu berkilau</span>
+                    </h1>
+                    <p class="hero__desc">
+                        Ajak bestie, pilih frame favorit, dan klik. Hasilnya langsung jadi strip foto yang
+                        siap kamu simpan dan bagikan.
+                    </p>
+                    <a href="menu/photobooth.html" class="btn btn--cta">
+                        <svg
+                            viewBox="0 0 24 24"
+                            width="22"
+                            height="22"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"
+                            />
+                            <circle cx="12" cy="13" r="3.6" />
+                        </svg>
+                        Mulai foto sekarang
+                    </a>
+                </div>
+
+                <div class="hero__visual">
+                    <span class="sparkle sparkle--1" aria-hidden="true">✦</span>
+                    <span class="sparkle sparkle--2" aria-hidden="true">✦</span>
+                    <span class="sparkle sparkle--3" aria-hidden="true">✦</span>
+                    <span class="sparkle sparkle--4" aria-hidden="true">✦</span>
+                    <span class="sparkle sparkle--5" aria-hidden="true">✦</span>
+
+                    <!-- Bingkai strip: klik untuk "cetak ulang" foto -->
+                    <button
+                        class="frame"
+                        id="frame"
+                        type="button"
+                        aria-label="Klik untuk cetak ulang strip foto"
+                    >
+                        <span class="frame__photo">
+                            <img src="assets/images/selfiecontoh2.jpg" alt="Selfie berempat" />
+                            <span class="frame__flash" aria-hidden="true"></span>
+                        </span>
+                        <span class="frame__photo">
+                            <img src="assets/images/selfiecontoh3.jpg" alt="Selfie di taman" />
+                            <span class="frame__flash" aria-hidden="true"></span>
+                        </span>
+                        <span class="frame__photo">
+                            <img src="assets/images/selfiecontoh4.jpg" alt="Selfie pose hati" />
+                            <span class="frame__flash" aria-hidden="true"></span>
+                        </span>
+                        <span class="frame__caption"
+                            >Twinkle Cam <span class="frame__spark" aria-hidden="true">✦</span></span
+                        >
+                    </button>
+                </div>
+            </section>
+
+            <section class="section" id="cara-kerja">
+                <h2 class="section__title">Cara pakai Twinkle Cam</h2>
+                <ol class="steps">
+                    <li class="step">
+                        <span class="step__no">1</span>
+                        <h3>Pilih frame &amp; filter</h3>
+                        <p>Ada beberapa frame, termasuk Selfie Besties dengan strip 3 foto.</p>
+                    </li>
+                    <li class="step">
+                        <span class="step__no">2</span>
+                        <h3>Izinkan kamera</h3>
+                        <p>Klik Mulai jepret dan izinkan akses kamera. Belum siap? Coba foto contoh.</p>
+                    </li>
+                    <li class="step">
+                        <span class="step__no">3</span>
+                        <h3>Pose &amp; jepret</h3>
+                        <p>Hitung mundur 3 detik di tiap foto, lalu semuanya diambil otomatis.</p>
+                    </li>
+                    <li class="step">
+                        <span class="step__no">4</span>
+                        <h3>Unduh atau simpan</h3>
+                        <p>
+                            Guest unduh gratis 3x. Login untuk unduh tanpa batas dan simpan ke Riwayat Album.
+                        </p>
+                    </li>
+                </ol>
+                <div class="center">
+                    <a href="menu/templates.html" class="btn btn--outline">Lihat semua template</a>
+                    <button class="btn btn--outline" id="replayTutorial" type="button">
+                        Putar ulang tutorial
+                    </button>
+                </div>
+            </section>
+        </main>
+        <footer class="footer" id="site-footer"></footer>
+        <script src="assets/js/layout.js"></script>
+        <script src="assets/js/tutorial.js"></script>
+        <script src="assets/js/main.js"></script>
+    </body>
+</html>
