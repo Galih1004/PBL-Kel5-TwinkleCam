@@ -1,0 +1,752 @@
+/* =========================================================
+   TWINKLE CAM — Alur Pengambilan Foto (Langkah 1–6)
+   Dimuat SETELAH style.css & pages.css: memakai token warna dan
+   tombol .btn milik situs, jadi tidak mengubah desain lain.
+   Semua class baru berawalan "tc-". Satu-satunya class tanpa
+   prefix adalah .hidden (navigasi antar langkah).
+   ========================================================= */
+
+/* Navigasi antar langkah: elemen dengan class ini disembunyikan */
+.hidden {
+  display: none !important;
+}
+
+.tc-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.tc-flow img,
+.tc-flow video,
+.tc-flow canvas {
+  display: block;
+  max-width: 100%;
+}
+
+.tc-flow button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Tombol selebar penampung (label upload stiker) */
+.tc-block {
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* ---------- 4. Kerangka halaman & transisi antar langkah ---------- */
+/* Padding vertikal ada di tiap langkah (bukan di wrapper) supaya wrapper
+   yang kosong saat Langkah 1 tidak menambah ruang kosong di beranda. */
+.tc-flow {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-inline: clamp(1.25rem, 5vw, 4rem);
+}
+
+.tc-flow > .tc-step {
+  padding-bottom: 4rem;
+}
+
+.tc-flow > .tc-progress {
+  margin-top: 1.5rem;
+}
+
+.tc-step {
+  position: relative;
+  animation: tc-step-in 0.45s var(--ease) both;
+}
+
+@keyframes tc-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tc-step__head {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.tc-eyebrow {
+  display: inline-block;
+  margin-bottom: 0.4rem;
+  padding: 0.2rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.tc-step__title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.tc-step__title:focus {
+  outline: none;
+}
+
+.tc-step__desc {
+  max-width: 34rem;
+  margin: 0.6rem auto 0;
+  color: var(--text-soft);
+}
+
+.tc-step__desc strong {
+  color: var(--text);
+}
+
+.tc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+/* ---------- 5. Progress ---------- */
+.tc-progress {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 3vw, 1.8rem);
+  margin: 0 auto 1.5rem;
+  list-style: none;
+}
+
+.tc-progress__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  opacity: 0.55;
+  transition: opacity 0.3s, color 0.3s;
+}
+
+.tc-progress__dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--line-strong);
+  border-radius: 50%;
+  transition: background 0.3s, border-color 0.3s, transform 0.3s var(--ease);
+}
+
+.tc-progress__item.is-done {
+  opacity: 0.9;
+}
+
+.tc-progress__item.is-done .tc-progress__dot {
+  background: var(--purple);
+  border-color: var(--purple);
+}
+
+.tc-progress__item.is-active {
+  opacity: 1;
+  color: var(--text);
+}
+
+.tc-progress__item.is-active .tc-progress__dot {
+  background: var(--pink);
+  border-color: var(--pink);
+  transform: scale(1.3);
+  box-shadow: 0 0 12px rgba(255, 111, 177, 0.7);
+}
+
+/* ---------- 7. Langkah 2 — Kartu ukuran bingkai ---------- */
+.tc-grid-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.tc-option-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.3rem 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface);
+  text-align: center;
+  transition:
+    transform 0.3s var(--ease),
+    border-color 0.3s,
+    box-shadow 0.3s,
+    background 0.3s;
+}
+
+.tc-option-card:hover {
+  transform: translateY(-5px);
+  background: var(--hover);
+  border-color: var(--line-strong);
+}
+
+.tc-option-card.is-selected {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 2px var(--pink), 0 14px 40px rgba(255, 111, 177, 0.35);
+}
+
+.tc-option-card__label {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.tc-option-card__meta {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+
+/* Ikon visual: kotak-kotak kecil sesuai susunan bingkai */
+.tc-grid-icon {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--cell));
+  gap: 4px;
+  align-content: center;
+  justify-content: center;
+  min-height: 150px;
+}
+
+.tc-grid-icon__cell {
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-radius: 4px;
+  background: var(--gradient);
+  opacity: 0.9;
+}
+
+/* ---------- 8. Langkah 3 — Kartu template ---------- */
+.tc-template-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  align-items: start;
+  gap: 1.2rem;
+}
+
+.tc-template-card {
+  padding-bottom: 1rem;
+  cursor: pointer;
+}
+
+.tc-template-card .tc-frame-wrap {
+  pointer-events: none;
+}
+
+/* ---------- 9. Bingkai (dipakai di Langkah 3, 5) ---------- */
+/* Wrapper = "container query": semua ukuran bingkai memakai satuan cqw
+   (persen lebar bingkai) sehingga tampilan layar & hasil canvas sama proporsinya. */
+.tc-frame-wrap {
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, var(--frame-w, 300px));
+  margin-inline: auto;
+}
+
+/* Lebar bingkai penuh (Langkah 5) menurut susunan kolom/baris */
+.tc-frame-wrap[data-cols="1"][data-rows="1"] { --frame-w: 420px; }
+.tc-frame-wrap[data-cols="1"][data-rows="2"] { --frame-w: 320px; }
+.tc-frame-wrap[data-cols="1"][data-rows="3"] { --frame-w: 270px; }
+.tc-frame-wrap[data-cols="1"][data-rows="4"] { --frame-w: 230px; }
+.tc-frame-wrap[data-cols="2"] { --frame-w: 460px; }
+.tc-frame-wrap[data-cols="3"] { --frame-w: 520px; }
+.tc-frame-wrap[data-cols="4"] { --frame-w: 560px; }
+
+/* Versi mini untuk kartu template */
+.tc-frame-wrap--mini[data-cols="1"][data-rows="1"] { --frame-w: 150px; }
+.tc-frame-wrap--mini[data-cols="1"][data-rows="2"] { --frame-w: 110px; }
+.tc-frame-wrap--mini[data-cols="1"][data-rows="3"] { --frame-w: 96px; }
+.tc-frame-wrap--mini[data-cols="1"][data-rows="4"] { --frame-w: 84px; }
+.tc-frame-wrap--mini[data-cols="2"] { --frame-w: 150px; }
+.tc-frame-wrap--mini[data-cols="3"] { --frame-w: 170px; }
+.tc-frame-wrap--mini[data-cols="4"] { --frame-w: 180px; }
+
+.tc-frame {
+  padding: 4cqw 4cqw 0;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.4);
+}
+
+.tc-frame__slots {
+  display: grid;
+  gap: 2.5cqw;
+}
+
+.tc-slot {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 2cqw;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.tc-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.3s;
+}
+
+.tc-slot--empty {
+  display: grid;
+  place-items: center;
+  font-size: 6cqw;
+  opacity: 0.55;
+}
+
+.tc-frame__caption {
+  display: grid;
+  place-items: center;
+  height: 14cqw;
+  font-size: 4.6cqw;
+  font-weight: 700;
+}
+
+/* ---------- 10. Stiker di atas bingkai ---------- */
+.tc-sticker-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tc-sticker {
+  position: absolute;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  outline: 2px dashed transparent;
+  outline-offset: 4px;
+}
+
+.tc-sticker:active {
+  cursor: grabbing;
+}
+
+.tc-sticker img {
+  display: block;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+}
+
+.tc-sticker.is-selected {
+  outline-color: var(--pink);
+}
+
+/* ---------- 11. Langkah 4 — Kamera ---------- */
+.tc-camera {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.tc-camera__viewport {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: #141220;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+}
+
+.tc-camera__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* cermin, supaya terasa seperti bercermin */
+}
+
+.tc-camera__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  text-align: center;
+  color: #c9c6dc;
+  background: #1c1930;
+}
+
+.tc-camera__placeholder-icon {
+  font-size: 3rem;
+}
+
+.tc-camera__badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 0.25rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+}
+
+.tc-countdown {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: clamp(6rem, 22vw, 11rem);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 6px 40px rgba(124, 92, 255, 0.9);
+  pointer-events: none;
+}
+
+.tc-countdown.is-pop {
+  animation: tc-pop 0.9s var(--ease);
+}
+
+@keyframes tc-pop {
+  0% { opacity: 0; transform: scale(1.6); }
+  25% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.85; transform: scale(0.9); }
+}
+
+.tc-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tc-flash.is-firing {
+  animation: tc-flash 0.5s ease-out;
+}
+
+@keyframes tc-flash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.tc-camera__status {
+  min-height: 1.6em;
+  margin-top: 0.9rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--text-soft);
+}
+
+.tc-camera__status.is-error {
+  color: var(--error);
+}
+
+.tc-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 0.8rem;
+}
+
+.tc-thumb {
+  width: 72px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.tc-thumb.is-filled {
+  border-style: solid;
+  border-color: var(--pink);
+}
+
+.tc-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- 12. Langkah 5 — Editor ---------- */
+.tc-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 2rem;
+}
+
+.tc-editor__stage {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--surface);
+}
+
+.tc-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--surface);
+}
+
+.tc-panel__title {
+  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.tc-panel__hint {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+
+.tc-panel__hint.is-error {
+  color: var(--error);
+}
+
+.tc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tc-chip {
+  padding: 0.4rem 0.95rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.tc-chip:hover {
+  background: var(--hover);
+}
+
+.tc-chip.is-active {
+  border-color: transparent;
+  background: var(--gradient);
+  color: #fff;
+}
+
+.tc-sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.4rem;
+}
+
+.tc-sticker-btn {
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 1.4rem;
+  line-height: 1;
+  transition: transform 0.2s var(--ease), background 0.2s;
+}
+
+.tc-sticker-btn:hover {
+  background: var(--hover);
+  transform: scale(1.12);
+}
+
+.tc-sticker-tools {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.tc-tool {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.tc-tool:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.tc-tool--danger {
+  color: var(--error);
+}
+
+/* ---------- 13. Langkah 6 — Hasil ---------- */
+.tc-tabs {
+  display: flex;
+  width: fit-content;
+  margin: 0 auto 1.5rem;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.tc-tab {
+  padding: 0.55rem 1.5rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  transition: background 0.25s, color 0.25s;
+}
+
+.tc-tab.is-active {
+  background: var(--gradient);
+  color: #fff;
+}
+
+.tc-result-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tc-result__loading {
+  padding: 3rem 0;
+  color: var(--text-soft);
+}
+
+.tc-result__image {
+  width: auto;
+  max-width: 100%;
+  max-height: 72vh;
+  border-radius: 6px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45), 0 0 80px rgba(124, 92, 255, 0.25);
+}
+
+.tc-result__notice {
+  min-height: 1.5em;
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.tc-result__notice.is-error {
+  color: var(--error);
+}
+
+/* Live photo: bingkai polaroid dengan foto yang berganti cepat */
+.tc-live {
+  position: relative;
+  width: min(100%, 520px);
+  padding: 4% 4% 0;
+  border-radius: 6px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45), 0 0 80px rgba(255, 111, 177, 0.25);
+}
+
+.tc-live__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.tc-live__caption {
+  display: grid;
+  place-items: center;
+  height: 64px;
+  font-weight: 700;
+}
+
+.tc-live__badge {
+  position: absolute;
+  top: calc(4% + 12px);
+  left: calc(4% + 12px);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  backdrop-filter: blur(6px);
+}
+
+.tc-live__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff4d6d;
+  animation: tc-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes tc-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.tc-live__dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tc-live__dot-item {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.tc-live__dot-item.is-active {
+  background: var(--pink);
+  transform: scale(1.4);
+}
+
+/* ---------- 14. Responsif ---------- */
+@media (max-width: 900px) {
+  .tc-editor {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .tc-progress__label {
+    display: none;
+  }
+
+  .tc-sticker-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .tc-editor__stage {
+    padding: 0.8rem;
+  }
+}

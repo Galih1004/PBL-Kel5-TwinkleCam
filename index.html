@@ -12,6 +12,7 @@
         />
         <link rel="stylesheet" href="assets/css/style.css" />
         <link rel="stylesheet" href="assets/css/pages.css" />
+        <link rel="stylesheet" href="assets/css/flow.css" />
         <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg" />
         <script>
             /* Terapkan tema tersimpan sebelum render agar tidak berkedip */
@@ -26,107 +27,295 @@
         <header class="header" id="site-header"></header>
 
         <main>
-            <section class="hero" id="beranda">
-                <div class="hero__text">
-                    <h1 class="hero__title">
-                        Photobooth online yang bikin
-                        <span class="hero__accent">momenmu berkilau</span>
-                    </h1>
-                    <p class="hero__desc">
-                        Ajak bestie, pilih frame favorit, dan klik. Hasilnya langsung jadi strip foto yang
-                        siap kamu simpan dan bagikan.
-                    </p>
-                    <a href="menu/photobooth.html" class="btn btn--cta">
-                        <svg
-                            viewBox="0 0 24 24"
-                            width="22"
-                            height="22"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <path
-                                d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"
-                            />
-                            <circle cx="12" cy="13" r="3.6" />
-                        </svg>
-                        Mulai foto sekarang
-                    </a>
-                </div>
-
-                <div class="hero__visual">
-                    <span class="sparkle sparkle--1" aria-hidden="true">✦</span>
-                    <span class="sparkle sparkle--2" aria-hidden="true">✦</span>
-                    <span class="sparkle sparkle--3" aria-hidden="true">✦</span>
-                    <span class="sparkle sparkle--4" aria-hidden="true">✦</span>
-                    <span class="sparkle sparkle--5" aria-hidden="true">✦</span>
-
-                    <!-- Bingkai strip: klik untuk "cetak ulang" foto -->
-                    <button
-                        class="frame"
-                        id="frame"
-                        type="button"
-                        aria-label="Klik untuk cetak ulang strip foto"
-                    >
-                        <span class="frame__photo">
-                            <img src="assets/images/selfiecontoh2.jpg" alt="Selfie berempat" />
-                            <span class="frame__flash" aria-hidden="true"></span>
-                        </span>
-                        <span class="frame__photo">
-                            <img src="assets/images/selfiecontoh3.jpg" alt="Selfie di taman" />
-                            <span class="frame__flash" aria-hidden="true"></span>
-                        </span>
-                        <span class="frame__photo">
-                            <img src="assets/images/selfiecontoh4.jpg" alt="Selfie pose hati" />
-                            <span class="frame__flash" aria-hidden="true"></span>
-                        </span>
-                        <span class="frame__caption"
-                            >Twinkle Cam <span class="frame__spark" aria-hidden="true">✦</span></span
-                        >
-                    </button>
-                </div>
-            </section>
-
-            <section class="section" id="cara-kerja">
-                <h2 class="section__title">Cara pakai Twinkle Cam</h2>
-                <ol class="steps">
-                    <li class="step">
-                        <span class="step__no">1</span>
-                        <h3>Pilih frame &amp; filter</h3>
-                        <p>Ada beberapa frame, termasuk Selfie Besties dengan strip 3 foto.</p>
-                    </li>
-                    <li class="step">
-                        <span class="step__no">2</span>
-                        <h3>Izinkan kamera</h3>
-                        <p>Klik Mulai jepret dan izinkan akses kamera. Belum siap? Coba foto contoh.</p>
-                    </li>
-                    <li class="step">
-                        <span class="step__no">3</span>
-                        <h3>Pose &amp; jepret</h3>
-                        <p>Hitung mundur 3 detik di tiap foto, lalu semuanya diambil otomatis.</p>
-                    </li>
-                    <li class="step">
-                        <span class="step__no">4</span>
-                        <h3>Unduh atau simpan</h3>
-                        <p>
-                            Guest unduh gratis 3x. Login untuk unduh tanpa batas dan simpan ke Riwayat Album.
+            <!-- LANGKAH 1 — Layar Mulai: beranda lama (hero + cara pakai); tombol hero kini membuka Langkah 2 -->
+            <div class="tc-step" id="step-start" data-step="1">
+                <section class="hero" id="beranda">
+                    <div class="hero__text">
+                        <h1 class="hero__title">
+                            Photobooth online yang bikin
+                            <span class="hero__accent">momenmu berkilau</span>
+                        </h1>
+                        <p class="hero__desc">
+                            Ajak bestie, pilih frame favorit, dan klik. Hasilnya langsung jadi strip foto yang
+                            siap kamu simpan dan bagikan.
                         </p>
-                    </li>
+                        <button class="btn btn--cta" id="btnStart" type="button" data-goto="2">
+                            <svg
+                                viewBox="0 0 24 24"
+                                width="22"
+                                height="22"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M4 8h3l1.6-2.4h6.8L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"
+                                />
+                                <circle cx="12" cy="13" r="3.6" />
+                            </svg>
+                            Mulai foto sekarang
+                        </button>
+                    </div>
+
+                    <div class="hero__visual">
+                        <span class="sparkle sparkle--1" aria-hidden="true">✦</span>
+                        <span class="sparkle sparkle--2" aria-hidden="true">✦</span>
+                        <span class="sparkle sparkle--3" aria-hidden="true">✦</span>
+                        <span class="sparkle sparkle--4" aria-hidden="true">✦</span>
+                        <span class="sparkle sparkle--5" aria-hidden="true">✦</span>
+
+                        <!-- Bingkai strip: klik untuk "cetak ulang" foto -->
+                        <button
+                            class="frame"
+                            id="frame"
+                            type="button"
+                            aria-label="Klik untuk cetak ulang strip foto"
+                        >
+                            <span class="frame__photo">
+                                <img src="assets/images/selfiecontoh2.jpg" alt="Selfie berempat" />
+                                <span class="frame__flash" aria-hidden="true"></span>
+                            </span>
+                            <span class="frame__photo">
+                                <img src="assets/images/selfiecontoh3.jpg" alt="Selfie di taman" />
+                                <span class="frame__flash" aria-hidden="true"></span>
+                            </span>
+                            <span class="frame__photo">
+                                <img src="assets/images/selfiecontoh4.jpg" alt="Selfie pose hati" />
+                                <span class="frame__flash" aria-hidden="true"></span>
+                            </span>
+                            <span class="frame__caption"
+                                >Twinkle Cam <span class="frame__spark" aria-hidden="true">✦</span></span
+                            >
+                        </button>
+                    </div>
+                </section>
+
+                <section class="section" id="cara-kerja">
+                    <h2 class="section__title">Cara pakai Twinkle Cam</h2>
+                    <ol class="steps">
+                        <li class="step">
+                            <span class="step__no">1</span>
+                            <h3>Pilih frame &amp; filter</h3>
+                            <p>Ada beberapa frame, termasuk Selfie Besties dengan strip 3 foto.</p>
+                        </li>
+                        <li class="step">
+                            <span class="step__no">2</span>
+                            <h3>Izinkan kamera</h3>
+                            <p>Klik Mulai jepret dan izinkan akses kamera. Belum siap? Coba foto contoh.</p>
+                        </li>
+                        <li class="step">
+                            <span class="step__no">3</span>
+                            <h3>Pose &amp; jepret</h3>
+                            <p>Hitung mundur 3 detik di tiap foto, lalu semuanya diambil otomatis.</p>
+                        </li>
+                        <li class="step">
+                            <span class="step__no">4</span>
+                            <h3>Unduh atau simpan</h3>
+                            <p>
+                                Guest unduh gratis 3x. Login untuk unduh tanpa batas dan simpan ke Riwayat Album.
+                            </p>
+                        </li>
+                    </ol>
+                    <div class="center">
+                        <a href="menu/templates.html" class="btn btn--outline">Lihat semua template</a>
+                        <button class="btn btn--outline" id="replayTutorial" type="button">
+                            Putar ulang tutorial
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- LANGKAH 2–6 — dikelola assets/js/flow.js (tampil/sembunyi lewat class .hidden) -->
+            <div class="tc-flow" id="flow">
+                <ol class="tc-progress hidden" id="progress" aria-label="Progres langkah">
+                    <li class="tc-progress__item" data-progress="2"><span class="tc-progress__dot"></span><span class="tc-progress__label">Ukuran</span></li>
+                    <li class="tc-progress__item" data-progress="3"><span class="tc-progress__dot"></span><span class="tc-progress__label">Template</span></li>
+                    <li class="tc-progress__item" data-progress="4"><span class="tc-progress__dot"></span><span class="tc-progress__label">Foto</span></li>
+                    <li class="tc-progress__item" data-progress="5"><span class="tc-progress__dot"></span><span class="tc-progress__label">Edit</span></li>
+                    <li class="tc-progress__item" data-progress="6"><span class="tc-progress__dot"></span><span class="tc-progress__label">Hasil</span></li>
                 </ol>
-                <div class="center">
-                    <a href="menu/templates.html" class="btn btn--outline">Lihat semua template</a>
-                    <button class="btn btn--outline" id="replayTutorial" type="button">
-                        Putar ulang tutorial
-                    </button>
-                </div>
-            </section>
+
+                <!-- =====================================================
+                          LANGKAH 2 — Pilih Ukuran Bingkai
+                          Kartu dibuat otomatis oleh renderGridOptions() di script.js
+                          ===================================================== -->
+                <section class="tc-step hidden" id="step-grid" data-step="2" aria-labelledby="titleGrid">
+                    <header class="tc-step__head">
+                        <p class="tc-eyebrow">Langkah 2</p>
+                        <h2 class="tc-step__title" id="titleGrid" tabindex="-1">Pilih ukuran bingkai</h2>
+                        <p class="tc-step__desc">Makin besar ukurannya, makin banyak foto yang akan diambil.</p>
+                    </header>
+
+                    <div class="tc-grid-options" id="gridOptions" role="radiogroup" aria-label="Ukuran bingkai"></div>
+
+                    <div class="tc-actions">
+                        <button class="btn btn--outline" type="button" data-goto="1">Kembali</button>
+                    </div>
+                </section>
+
+                <!-- =====================================================
+                          LANGKAH 3 — Pilih Template Visual
+                          Kartu dibuat otomatis oleh renderTemplateOptions() di script.js
+                          ===================================================== -->
+                <section class="tc-step hidden" id="step-template" data-step="3" aria-labelledby="titleTemplate">
+                    <header class="tc-step__head">
+                        <p class="tc-eyebrow">Langkah 3</p>
+                        <h2 class="tc-step__title" id="titleTemplate" tabindex="-1">Pilih template</h2>
+                        <p class="tc-step__desc">
+                            Template untuk bingkai <strong id="templateGridLabel">-</strong>. Pilih yang paling kamu suka.
+                        </p>
+                    </header>
+
+                    <div class="tc-template-options" id="templateOptions" role="radiogroup" aria-label="Template bingkai"></div>
+
+                    <div class="tc-actions">
+                        <button class="btn btn--outline" type="button" data-goto="2">Kembali</button>
+                    </div>
+                </section>
+
+                <!-- =====================================================
+                          LANGKAH 4 — Sesi Pengambilan Foto (raw camera, tanpa filter)
+                          ===================================================== -->
+                <section class="tc-step hidden" id="step-capture" data-step="4" aria-labelledby="titleCapture">
+                    <header class="tc-step__head">
+                        <p class="tc-eyebrow">Langkah 4</p>
+                        <h2 class="tc-step__title" id="titleCapture" tabindex="-1">Waktunya pose!</h2>
+                        <p class="tc-step__desc">
+                            Kamu akan diambil <strong id="captureTotalLabel">0</strong> foto dengan hitung mundur 3 detik.
+                        </p>
+                    </header>
+
+                    <div class="tc-camera">
+                        <div class="tc-camera__viewport" id="cameraViewport">
+                            <video id="cameraVideo" class="tc-camera__video" autoplay playsinline muted></video>
+
+                            <!-- Muncul saat kamera belum aktif / gagal -->
+                            <div class="tc-camera__placeholder" id="cameraPlaceholder">
+                                <span class="tc-camera__placeholder-icon" aria-hidden="true">📷</span>
+                                <span id="cameraPlaceholderText">Menyiapkan kamera…</span>
+                            </div>
+
+                            <div class="tc-countdown hidden" id="countdown" aria-live="assertive">3</div>
+                            <div class="tc-flash" id="cameraFlash" aria-hidden="true"></div>
+                            <span class="tc-camera__badge hidden" id="captureBadge">Foto 1 / 1</span>
+                        </div>
+
+                        <p class="tc-camera__status" id="cameraStatus" role="status"></p>
+
+                        <div class="tc-thumbs" id="captureThumbs" aria-label="Foto yang sudah diambil"></div>
+
+                        <div class="tc-actions">
+                            <button class="btn btn--cta" id="btnStartCapture" type="button" disabled>Mulai Jepret</button>
+                            <button class="btn btn--outline hidden" id="btnRetryCamera" type="button">Coba aktifkan kamera lagi</button>
+                            <button class="btn btn--outline" id="btnDemoMode" type="button">Pakai foto contoh</button>
+                            <button class="btn btn--outline" type="button" data-goto="3">Kembali</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- =====================================================
+                          LANGKAH 5 — Ruang Edit
+                          ===================================================== -->
+                <section class="tc-step hidden" id="step-edit" data-step="5" aria-labelledby="titleEdit">
+                    <header class="tc-step__head">
+                        <p class="tc-eyebrow">Langkah 5</p>
+                        <h2 class="tc-step__title" id="titleEdit" tabindex="-1">Ruang edit</h2>
+                        <p class="tc-step__desc">Tambah filter dan stiker. Stiker bisa digeser langsung di atas foto.</p>
+                    </header>
+
+                    <div class="tc-editor">
+                        <!-- Area pratinjau: bingkai dibuat oleh buildFrame() di script.js -->
+                        <div class="tc-editor__stage" id="editStage"></div>
+
+                        <aside class="tc-panel" aria-label="Panel edit">
+                            <!-- 1. Filter -->
+                            <div class="tc-panel__group">
+                                <h3 class="tc-panel__title">Filter</h3>
+                                <div class="tc-chips" id="filterOptions"></div>
+                            </div>
+
+                            <!-- 2. Stiker bawaan (emoji) -->
+                            <div class="tc-panel__group">
+                                <h3 class="tc-panel__title">Stiker</h3>
+                                <div class="tc-sticker-grid" id="stickerOptions"></div>
+                            </div>
+
+                            <!-- 3. Upload stiker dari perangkat -->
+                            <div class="tc-panel__group">
+                                <h3 class="tc-panel__title">Upload stiker</h3>
+                                <label class="btn btn--outline tc-block" for="stickerUpload">Pilih gambar dari perangkat</label>
+                                <input class="tc-visually-hidden" type="file" id="stickerUpload" accept="image/*" multiple />
+                                <p class="tc-panel__hint" id="uploadMessage" role="status">PNG transparan paling bagus. Maks. 5 MB per gambar.</p>
+                            </div>
+
+                            <!-- Kontrol stiker yang sedang dipilih -->
+                            <div class="tc-panel__group">
+                                <h3 class="tc-panel__title">Stiker terpilih</h3>
+                                <div class="tc-sticker-tools">
+                                    <button class="tc-tool" id="btnStickerSmaller" type="button" disabled aria-label="Kecilkan stiker">− Kecil</button>
+                                    <button class="tc-tool" id="btnStickerBigger" type="button" disabled aria-label="Besarkan stiker">+ Besar</button>
+                                    <button class="tc-tool" id="btnStickerRotate" type="button" disabled aria-label="Putar stiker">↻ Putar</button>
+                                    <button class="tc-tool tc-tool--danger" id="btnStickerDelete" type="button" disabled aria-label="Hapus stiker">Hapus</button>
+                                </div>
+                                <p class="tc-panel__hint">Klik stiker di foto untuk memilihnya, lalu geser untuk memindah.</p>
+                            </div>
+                        </aside>
+                    </div>
+
+                    <div class="tc-actions">
+                        <button class="btn btn--cta" id="btnFinishEdit" type="button" data-goto="6">Selesai Edit</button>
+                        <button class="btn btn--outline" type="button" data-goto="4">Foto ulang</button>
+                    </div>
+                </section>
+
+                <!-- =====================================================
+                          LANGKAH 6 — Hasil Akhir
+                          ===================================================== -->
+                <section class="tc-step hidden" id="step-result" data-step="6" aria-labelledby="titleResult">
+                    <header class="tc-step__head">
+                        <p class="tc-eyebrow">Langkah 6</p>
+                        <h2 class="tc-step__title" id="titleResult" tabindex="-1">Hasil akhir kamu</h2>
+                        <p class="tc-step__desc">Pilih tampilan: foto statis JPG atau animasi Live Photo.</p>
+                    </header>
+
+                    <div class="tc-tabs" role="tablist" aria-label="Mode tampilan hasil">
+                        <button class="tc-tab is-active" id="tabJpg" type="button" role="tab" aria-selected="true" aria-controls="resultJpgPanel">Hasil JPG</button>
+                        <button class="tc-tab" id="tabLive" type="button" role="tab" aria-selected="false" aria-controls="resultLivePanel">Live Photo</button>
+                    </div>
+
+                    <!-- Mode 1: JPG statis -->
+                    <div class="tc-result-panel" id="resultJpgPanel" role="tabpanel" aria-labelledby="tabJpg">
+                        <p class="tc-result__loading" id="resultLoading">Menyusun hasil…</p>
+                        <img class="tc-result__image hidden" id="resultImage" alt="Hasil akhir kolase foto" />
+                    </div>
+
+                    <!-- Mode 2: Live Photo (slideshow animasi) -->
+                    <div class="tc-result-panel hidden" id="resultLivePanel" role="tabpanel" aria-labelledby="tabLive">
+                        <div class="tc-live" id="liveStage">
+                            <span class="tc-live__badge"><span class="tc-live__dot" aria-hidden="true"></span>LIVE</span>
+                            <img class="tc-live__image" id="liveImage" alt="Live photo" />
+                            <span class="tc-live__caption">Twinkle Cam ✦</span>
+                        </div>
+                        <div class="tc-live__dots" id="liveDots" aria-hidden="true"></div>
+                    </div>
+
+                    <p class="tc-result__notice" id="resultNotice" role="status"></p>
+
+                    <div class="tc-actions">
+                        <button class="btn btn--cta" id="btnDownload" type="button">Unduh Hasil</button>
+                        <button class="btn btn--outline" type="button" data-goto="5">Edit lagi</button>
+                        <button class="btn btn--outline" id="btnHome" type="button" data-action="home">Kembali ke Beranda</button>
+                    </div>
+                </section>
+            </div>
         </main>
         <footer class="footer" id="site-footer"></footer>
         <script src="assets/js/layout.js"></script>
         <script src="assets/js/tutorial.js"></script>
         <script src="assets/js/main.js"></script>
+        <script src="assets/js/flow.js"></script>
     </body>
 </html>
