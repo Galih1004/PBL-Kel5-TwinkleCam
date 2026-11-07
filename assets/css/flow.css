@@ -322,6 +322,7 @@
 .tc-sticker-layer {
   position: absolute;
   inset: 0;
+  z-index: 3; /* lapisan paling atas: di atas foto (1) dan bingkai (2) */
   pointer-events: none;
 }
 
@@ -749,4 +750,165 @@
   .tc-editor__stage {
     padding: 0.8rem;
   }
+}
+
+/* =========================================================
+   15. LAYERING FOTO + BINGKAI (template bergambar)
+   Tumpukan (z-index rendah -> tinggi):
+     0  latar putih pada .tc-frame-wrap--image
+     1  .tc-photo-layer    foto user, diposisikan tepat di belakang lubang bingkai
+     2  .tc-template-layer gambar bingkai (PNG berlubang) DI ATAS foto
+     3  .tc-sticker-layer  stiker
+   Karena bingkai berada di atas foto, foto tampak "masuk" ke dalam bingkai.
+   ========================================================= */
+.tc-frame-wrap--image {
+  /* Lebar mengikuti rasio gambar, tinggi dibatasi agar tidak melebihi layar */
+  --frame-w: calc(min(72vh, 680px) * var(--ar));
+  aspect-ratio: var(--ar);
+  isolation: isolate; /* z-index di dalam bingkai tidak bocor ke elemen lain */
+  background: #fff; /* terlihat di bagian transparan di luar lubang */
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.4);
+}
+
+.tc-photo-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.tc-photo-slot {
+  position: absolute; /* left/top/width/height diisi dari posisi lubang (persen) */
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.12); /* terlihat bila foto belum ada */
+}
+
+.tc-photo-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.3s;
+}
+
+.tc-template-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* klik / geser tembus ke stiker */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ---------- 16. Pratinjau bingkai (kartu Langkah 3, galeri, upload) ---------- */
+.tc-frame-thumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 250px;
+  padding: 10px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--gradient); /* terlihat tembus di bagian bolong */
+}
+
+.tc-frame-thumb img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+}
+
+.tc-frame-thumb--large {
+  height: 340px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.tc-option-card__label--sm {
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.tc-template-card.is-loading {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.tc-template-empty {
+  max-width: 34rem;
+  margin: 0 auto 1.5rem;
+  padding: 0.9rem 1.2rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: 16px;
+  text-align: center;
+  color: var(--text-soft);
+}
+
+/* Kartu "Custom / Upload Bingkai" di Langkah 2 */
+.tc-grid-icon--custom {
+  position: relative;
+  display: grid;
+  place-items: center;
+  font-size: 3.4rem;
+  line-height: 1;
+}
+
+.tc-grid-icon__plus {
+  position: absolute;
+  right: calc(50% - 3.4rem);
+  bottom: 28px;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--gradient);
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+/* Dua sub-pilihan mode Custom */
+.tc-subchoice {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.tc-subchoice__btn.is-active {
+  border-color: transparent;
+  background: var(--gradient);
+  color: #fff;
+}
+
+/* Upload bingkai */
+.tc-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  text-align: center;
+}
+
+.tc-upload label.btn {
+  cursor: pointer;
+}
+
+.tc-upload__preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  margin-top: 0.6rem;
+}
+
+.tc-upload__info {
+  color: var(--text-soft);
+  font-size: 0.95rem;
 }

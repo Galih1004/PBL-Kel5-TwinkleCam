@@ -120,12 +120,13 @@
                         </li>
                     </ol>
                     <div class="center">
-                        <a href="menu/templates.html" class="btn btn--outline">Lihat semua template</a>
+                        <a href="menu/templates.html#koleksi" class="btn btn--outline">Lihat semua template</a>
                         <button class="btn btn--outline" id="replayTutorial" type="button">
                             Putar ulang tutorial
                         </button>
                     </div>
                 </section>
+
             </div>
 
             <!-- LANGKAH 2–6 — dikelola assets/js/flow.js (tampil/sembunyi lewat class .hidden) -->
@@ -169,7 +170,38 @@
                         </p>
                     </header>
 
-                    <div class="tc-template-options" id="templateOptions" role="radiogroup" aria-label="Template bingkai"></div>
+                    <!-- Mode "Custom / Upload Bingkai": dua sub-pilihan (muncul hanya bila opsi Custom dipilih di Langkah 2) -->
+                    <div class="tc-subchoice hidden" id="customChoice" role="tablist" aria-label="Sumber bingkai custom">
+                        <button class="btn btn--outline tc-subchoice__btn is-active" id="tabCustomBuiltin" type="button" role="tab" aria-selected="true" aria-controls="panelBuiltin">
+                            Template Custom Bawaan
+                        </button>
+                        <button class="btn btn--outline tc-subchoice__btn" id="tabCustomUpload" type="button" role="tab" aria-selected="false" aria-controls="panelCustomUpload">
+                            Upload Bingkai Sendiri
+                        </button>
+                    </div>
+
+                    <!-- (a) Daftar template: sudah difilter menurut ukuran bingkai (atau template _CustomTemplate di mode Custom) -->
+                    <div id="panelBuiltin" role="tabpanel">
+                        <p class="tc-template-empty hidden" id="templateEmpty" role="status"></p>
+                        <div class="tc-template-options" id="templateOptions" role="radiogroup" aria-label="Template bingkai"></div>
+                    </div>
+
+                    <!-- (b) Upload bingkai milik user (PNG/JPG transparan) -->
+                    <div class="tc-upload hidden" id="panelCustomUpload" role="tabpanel">
+                        <label class="btn btn--cta" for="frameUpload">Pilih file bingkai (PNG / JPG)</label>
+                        <input class="tc-visually-hidden" type="file" id="frameUpload" accept="image/png,image/jpeg,image/webp" />
+                        <p class="tc-panel__hint" id="frameUploadMessage" role="status">
+                            Terbaik: PNG transparan dengan bagian foto bolong. Kotak hitam pekat juga bisa dibaca sebagai tempat foto. Maks. 10 MB.
+                        </p>
+
+                        <div class="tc-upload__preview hidden" id="frameUploadPreview">
+                            <div class="tc-frame-thumb tc-frame-thumb--large">
+                                <img id="frameUploadImg" alt="Pratinjau bingkai yang diunggah" />
+                            </div>
+                            <p class="tc-upload__info" id="frameUploadInfo"></p>
+                            <button class="btn btn--cta" id="btnUseUploadedFrame" type="button">Pakai bingkai ini</button>
+                        </div>
+                    </div>
 
                     <div class="tc-actions">
                         <button class="btn btn--outline" type="button" data-goto="2">Kembali</button>
@@ -316,6 +348,7 @@
         <script src="assets/js/layout.js"></script>
         <script src="assets/js/tutorial.js"></script>
         <script src="assets/js/main.js"></script>
+        <script src="assets/js/template-data.js"></script>
         <script src="assets/js/flow.js"></script>
     </body>
 </html>

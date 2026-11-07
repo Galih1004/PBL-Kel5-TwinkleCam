@@ -12,6 +12,7 @@
         />
         <link rel="stylesheet" href="../assets/css/style.css" />
         <link rel="stylesheet" href="../assets/css/pages.css" />
+        <link rel="stylesheet" href="../assets/css/template-gallery.css" />
         <link rel="icon" href="../assets/images/logo.jpg" type="image/jpeg" />
         <script>
             /* Terapkan tema tersimpan sebelum render agar tidak berkedip */
@@ -30,10 +31,47 @@
             <p class="page__lead">
                 Pilih frame untuk strip fotomu. Kamu masih bisa menggantinya saat memotret.
             </p>
-            <div class="tpl-grid" id="tplGrid"></div>
+
+            <!-- KOLEKSI BINGKAI: diisi assets/js/template-gallery.js dari assets/js/template-data.js -->
+            <section class="tg" id="koleksi" aria-labelledby="tgTitle">
+                <div class="tg__head">
+                    <h2 class="tg__title" id="tgTitle">Koleksi Bingkai</h2>
+                    <button class="chip tg__sample js-sample-toggle" type="button" aria-pressed="true">
+                        Foto contoh: nyala
+                    </button>
+                </div>
+                <div class="chips tg__filters" id="tgFilters" role="group" aria-label="Filter ukuran bingkai"></div>
+                <p class="tg__summary" id="tgSummary" role="status"></p>
+                <div id="tgGrid"></div>
+            </section>
+
+            <!-- FRAME WARNA (konten lama halaman ini) -->
+            <section class="tg" id="frame-warna" aria-labelledby="tgColorTitle">
+                <h2 class="tg__title" id="tgColorTitle">Frame Warna</h2>
+                <div class="tpl-grid" id="tplGrid"></div>
+            </section>
+
+            <!-- Pratinjau besar satu bingkai (bisa digeser ke bingkai sebelum / berikutnya) -->
+            <dialog class="tg-dialog" id="tgDialog" aria-labelledby="tgDialogTitle">
+                <div class="tg-dialog__box">
+                    <button class="tg-dialog__close" id="tgClose" type="button" aria-label="Tutup pratinjau">✕</button>
+                    <div class="tg-dialog__stage" id="tgStage"></div>
+                    <h3 class="tg-dialog__title" id="tgDialogTitle"></h3>
+                    <p class="tg-dialog__meta" id="tgDialogMeta"></p>
+                    <button class="chip js-sample-toggle" type="button" aria-pressed="true">Foto contoh: nyala</button>
+                    <div class="tg-dialog__nav">
+                        <button class="btn btn--outline btn--sm" id="tgPrev" type="button">‹ Sebelumnya</button>
+                        <span class="tg-dialog__pos" id="tgPos" aria-live="polite"></span>
+                        <button class="btn btn--outline btn--sm" id="tgNext" type="button">Berikutnya ›</button>
+                    </div>
+                    <a class="btn btn--cta" id="tgUse" href="#">Pakai template ini</a>
+                </div>
+            </dialog>
         </main>
         <footer class="footer" id="site-footer"></footer>
         <script src="../assets/js/layout.js"></script>
         <script src="../assets/js/templates.js"></script>
+        <script src="../assets/js/template-data.js"></script>
+        <script src="../assets/js/template-gallery.js"></script>
     </body>
 </html>
