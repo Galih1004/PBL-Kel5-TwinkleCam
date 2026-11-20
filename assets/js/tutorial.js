@@ -1,3 +1,4 @@
+/* [REVISI CEPAT] Isi langkah tutorial: array steps (title/text). Muncul sekali untuk pengunjung baru (kunci localStorage twinkle_tutorial_seen). */
 /* =========================================================
    TWINKLE CAM — Tutorial interaktif untuk pengunjung baru
    Newcomer = belum ada penanda "twinkle_tutorial_seen".
@@ -7,26 +8,32 @@
 (() => {
     const SEEN_KEY = "twinkle_tutorial_seen";
 
+    /* Isi tutorial. Tambah/ubah langkah = ubah objek di sini. */
     const STEPS = [
         {
             emoji: "👋",
             title: "Halo, selamat datang!",
-            text: "Twinkle Cam bikin strip foto estetik langsung dari browser. Kenalan 30 detik dulu yuk.",
+            text: "Twinkle Cam bikin strip foto estetik langsung dari browser. Ada 5 langkah singkat: Pilih, Template, Jepret, Hias, Simpan.",
         },
         {
-            emoji: "🎞️",
-            title: "Pilih frame & filter",
-            text: "Ada beberapa frame, termasuk Selfie Besties (strip 3 foto). Boleh ganti kapan saja, bahkan setelah jepret.",
+            emoji: "🧩",
+            title: "Pilih ukuran & template",
+            text: "Pilih tata letak (misalnya 3x1 atau 2x2). Di langkah berikutnya hanya template yang pas dengan ukuran itu yang tampil, atau unggah background sendiri.",
         },
         {
             emoji: "📸",
-            title: "Izinkan kamera, lalu pose!",
-            text: "Tekan Mulai jepret. Tiap foto ada hitung mundur 3 detik. Belum siap? Coba “Pakai foto contoh”.",
+            title: "Jepret sendiri atau bareng teman",
+            text: "Tekan Mulai jepret, tiap foto ada hitung mundur. Pilih tata letak 2 foto atau lebih, lalu tekan Undang teman: foto diambil bergantian dari kameramu dan HP temanmu.",
+        },
+        {
+            emoji: "✨",
+            title: "Hias fotomu",
+            text: "Tambah filter, set stiker, stiker tempel, dan tulisan. Template dipilih sebelum jepret, jadi hasilnya sama seperti gambar template.",
         },
         {
             emoji: "💾",
             title: "Unduh atau simpan",
-            text: "Guest bisa unduh gratis 3x. Login untuk unduh tanpa batas dan simpan ke Riwayat Album.",
+            text: "Hasilnya berupa foto dan live photo. Guest bisa unduh gratis sekali; login (Google atau email) untuk tanpa batas dan simpan ke Riwayat Album.",
         },
     ];
 
@@ -40,7 +47,19 @@
             return false;
         }
     }
-    const isNewcomer = () => canPersist() && localStorage.getItem(SEEN_KEY) === null;
+    /* Pengunjung BARU = belum pernah membuka web ini di browser ini (belum ada penanda SEEN_KEY),
+       belum login, dan bukan sedang membuka link terima-foto / room dari teman.
+       Penanda disimpan SEGERA saat keputusan diambil (bukan menunggu pop-up ditutup), jadi
+       kunjungan berikutnya, di halaman mana pun, tidak memunculkan pop-up lagi. */
+    const onGuestLink = () => /^#\/(terima|join)\//.test(location.hash);
+    const hasSeen = () => {
+        try {
+            return localStorage.getItem(SEEN_KEY) !== null;
+        } catch {
+            return true; // penyimpanan tidak bisa dipakai: jangan ganggu pengguna
+        }
+    };
+    const isNewcomer = () => canPersist() && !hasSeen() && !TC.auth.isLoggedIn() && !onGuestLink();
     const markSeen = () => {
         try {
             localStorage.setItem(SEEN_KEY, new Date().toISOString());
@@ -114,5 +133,10 @@
 
     TC.tutorial = { open, willShow: isNewcomer };
 
-    if (isNewcomer()) setTimeout(open, 600);
+    if (isNewcomer()) {
+        markSeen(); // tandai kunjungan pertama sekarang juga
+        setTimeout(open, 600);
+    } else if (onGuestLink() === false && !hasSeen() && TC.auth.isLoggedIn()) {
+        markSeen(); // pengguna yang sudah login dianggap bukan pengunjung baru
+    }
 })();

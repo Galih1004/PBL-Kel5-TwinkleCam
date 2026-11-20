@@ -1,3 +1,4 @@
+/* [REVISI CEPAT] Menu/halaman: const PAGES + navLinks | Template (warna & jumlah foto): TC.TEMPLATES | Login/tema/toast/modal: fungsi bernama sama di bawah | Nama kunci localStorage: twinkle_* */
 /* =========================================================
    TWINKLE CAM — Komponen bersama (header, footer, auth, modal)
    Dipakai semua halaman. Setiap <body> menandai kedalamannya
@@ -23,17 +24,17 @@
        shots : jumlah foto (default 4)
        bg    : gambar latar bingkai (relatif terhadap assets/)          */
     const TEMPLATES = [
-        { id: "twinkle", name: "Twinkle", c1: "#ff6fb1", c2: "#7c5cff", text: "#ffffff" },
-        { id: "midnight", name: "Midnight", c1: "#0d0a22", c2: "#2b2063", text: "#ffffff" },
-        { id: "cream", name: "Pastel Cream", c1: "#fff4e6", c2: "#ffd0e6", text: "#0d0a22" },
-        { id: "sunny", name: "Sunny Star", c1: "#ffe58a", c2: "#ff9ec9", text: "#0d0a22" },
+        { id: "twinkle", name: "Twinkle", c1: "#7c3aed", c2: "#c084fc", text: "#ffffff" },
+        { id: "midnight", name: "Midnight", c1: "#0e0a1a", c2: "#3b1d6e", text: "#ffffff" },
+        { id: "cream", name: "Pastel Cream", c1: "#f5eeff", c2: "#e2d0ff", text: "#1c1433" },
+        { id: "sunny", name: "Sunny Star", c1: "#fde68a", c2: "#f0abfc", text: "#1c1433" },
         {
             id: "selfie",
             name: "Selfie Besties",
             shots: 3,
             bg: "images/foto_selfiecontoh1.jpg",
-            c1: "#ff6fb1",
-            c2: "#7c5cff",
+            c1: "#7c3aed",
+            c2: "#d946ef",
             text: "#ffffff",
             isNew: true,
         },
@@ -78,6 +79,7 @@
 
     /* ---------- Toast ---------- */
     function toast(message) {
+        document.querySelectorAll(".toast").forEach((t) => t.remove()); // satu notifikasi sekali tampil
         const el = document.createElement("div");
         el.className = "toast";
         el.textContent = message;
@@ -159,6 +161,7 @@
     const gate = (key) => (GATED.has(key) ? ` data-requires-login="${key}"` : "");
 
     const navLinks = [
+        /* rev14: menu "Photobooth" dihapus dari header; masuk lewat tombol "Mulai foto" */
         ["home", "Beranda"],
         ["album", "Riwayat Album"],
         ["templates", "Templates"],
@@ -180,6 +183,7 @@
                 <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
                 <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
             </button>
+            ${currentFile === "photobooth.html" ? "" : `<a href="${link("booth")}" class="btn btn--cta btn--sm header__cta">Mulai foto</a>`}
             ${
                 user
                     ? '<button class="btn btn--outline" id="logout" type="button"></button>'
@@ -234,6 +238,10 @@
             <span>© ${new Date().getFullYear()} Twinkle Cam. Dibuat untuk momen bareng bestie.</span>
         </div>
         <nav class="footer__nav" aria-label="Tautan footer">${footerLinks}</nav>`;
+
+    /* PWA: bisa dipasang dan dibuka offline (butuh HTTPS atau localhost) */
+    if ("serviceWorker" in navigator && isSecureContext)
+        addEventListener("load", () => navigator.serviceWorker.register(ROOT + "sw.js").catch(() => {}));
 
     /* ---------- Fitur khusus login: kunci tautan untuk guest ----------
        Tambahkan data-requires-login="<kunci halaman>" ke elemen apa pun. */

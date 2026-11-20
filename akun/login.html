@@ -12,6 +12,7 @@
         />
         <link rel="stylesheet" href="../assets/css/style.css" />
         <link rel="stylesheet" href="../assets/css/pages.css" />
+        <link rel="manifest" href="../manifest.webmanifest" />
         <link rel="icon" href="../assets/images/logo.jpg" type="image/jpeg" />
         <script>
             /* Terapkan tema tersimpan sebelum render agar tidak berkedip */
@@ -25,13 +26,23 @@
     <body data-root="../">
         <header class="header" id="site-header"></header>
 
-        <main class="page auth">
+        <!-- ISI: kartu login/sign up (tab Login | Sign Up). Logika: assets/js/login.js (demo di browser, tanpa server). -->
+        
+<main class="page auth">
             <div class="auth__card">
                 <div class="tabs" role="tablist">
                     <button class="tab is-active" role="tab" data-mode="login" type="button">Login</button>
                     <button class="tab" role="tab" data-mode="signup" type="button">Sign Up</button>
                 </div>
-                <form id="authForm" novalidate>
+                <!-- [FITUR] LOGIN / SIGN UP DENGAN GOOGLE: tombol dirender login.js (Google Identity Services). Email Google wajib terverifikasi. -->
+                <div class="auth__google">
+                    <div id="googleBtn" aria-label="Lanjutkan dengan Google"></div>
+                    <p class="form-error" id="googleError" role="alert"></p>
+                </div>
+                <div class="auth__or" aria-hidden="true"><span>atau pakai email</span></div>
+                <!-- FORM: kolom nama hanya tampil saat mode Sign Up -->
+                
+<form id="authForm" novalidate>
                     <label class="field" id="nameField" hidden
                         >Nama
                         <input type="text" id="name" autocomplete="name" placeholder="Nama panggilanmu" />
@@ -59,11 +70,12 @@
                     <p class="form-error" id="formError" role="alert"></p>
                     <button class="btn btn--cta btn--block" type="submit" id="submitBtn">Login</button>
                 </form>
-                <p class="note">Versi demo: akun hanya disimpan di browser ini, belum terhubung ke server.</p>
+                <p class="note">Email wajib diisi dan hanya dipakai untuk akunmu. Versi demo: data akun disimpan di browser ini, tanpa password dan tanpa token Google.</p>
             </div>
         </main>
         <footer class="footer" id="site-footer"></footer>
         <script src="../assets/js/layout.js"></script>
+        <script src="../assets/js/config.js"></script>
         <script src="../assets/js/login.js"></script>
     </body>
 </html>

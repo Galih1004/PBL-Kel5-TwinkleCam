@@ -7,11 +7,13 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Pacifico&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@800&family=Caveat:wght@700&family=Fredoka:wght@600;700&family=Outfit:wght@400;500;600;700;800&family=Pacifico&display=swap"
             rel="stylesheet"
         />
         <link rel="stylesheet" href="../assets/css/style.css" />
         <link rel="stylesheet" href="../assets/css/pages.css" />
+        <link rel="manifest" href="../manifest.webmanifest" />
+        <meta name="theme-color" content="#0e0a1a" />
         <link rel="icon" href="../assets/images/logo.jpg" type="image/jpeg" />
         <script>
             /* Terapkan tema tersimpan sebelum render agar tidak berkedip */
@@ -22,48 +24,200 @@
             }
         </script>
     </head>
-    <body data-root="../">
-        <header class="header" id="site-header"></header>
+    <body data-root="../" data-view="setup">
+        <!-- HEADER: diisi otomatis oleh assets/js/layout.js -->
+        
+<header class="header" id="site-header"></header>
 
-        <main class="page booth">
-            <section class="booth__cam">
-                <div class="booth__head">
-                    <h1 class="page__title">Photobooth</h1>
-                    <button class="btn btn--outline btn--sm" id="helpBtn" type="button">Cara pakai</button>
-                </div>
-                <div class="cam">
-                    <video id="video" autoplay playsinline muted></video>
-                    <div class="cam__msg" id="camMsg">Meminta akses kamera…</div>
-                    <div class="cam__count" id="countdown" aria-live="assertive"></div>
-                    <div class="cam__flash" id="flash"></div>
-                    <div class="cam__progress" id="progress"></div>
-                </div>
-                <div class="booth__controls">
-                    <button class="btn btn--cta" id="startBtn" type="button">Mulai jepret</button>
-                    <button class="btn btn--outline" id="sampleBtn" type="button">Pakai foto contoh</button>
-                </div>
-                <h2 class="label">Filter</h2>
-                <div class="chips" id="filterChips"></div>
-                <h2 class="label">Template</h2>
-                <div class="chips" id="tplChips"></div>
-            </section>
+        <!-- ======= ALUR PHOTOBOOTH: 5 langkah dalam satu halaman =======
+             Perpindahan langkah lewat hash URL (#/setup, #/template, #/shoot, #/edit, #/result, #/terima/ID).
+             Router ada di assets/js/photobooth.js (function route, const VIEWS).
+             Setiap langkah = satu <section id="v-..."> di bawah. -->
+        
+<main class="page flow">
+            <!-- STEPPER (indikator langkah): jumlah <li> harus sama dengan langkah utama di VIEWS. Warna aktif/selesai diatur route(). -->
+            
+<ol class="stepper" id="steps" aria-label="Langkah">
+                <li><b>1</b><span>Pilih</span></li><li><b>2</b><span>Template</span></li><li><b>3</b><span>Jepret</span></li><li><b>4</b><span>Hias</span></li><li><b>5</b><span>Simpan</span></li>
+            </ol>
+            <!-- PERINGATAN: muncul hanya jika halaman dibuka lewat file:// (kamera sering diblokir). -->
+            
+<div class="notice" id="fileNote" hidden><span>Kamu membuka web langsung dari folder, jadi kamera sering diblokir browser. Jalankan <code>jalankan-lokal.bat</code> (Windows) atau <code>jalankan-lokal.command</code> (Mac/Linux), lalu buka <code>http://localhost:5500</code>.</span><button class="btn btn--outline btn--sm" type="button" onclick="this.parentNode.hidden=true">Tutup</button></div>
+            <!-- ===== LANGKAH 1: PILIH TATA LETAK + TIMER =====
+                 #lays diisi buildLays() (photobooth.js). Data tata letak: const LAY. Panel kanan = ringkasan (#sumPrev, #sumName). -->
+    
+<section id="v-setup" class="view" hidden>
+    <div class="pagehead"><h1>Pilih tata letak</h1><p>Tentukan susunan fotomu dan timernya. Bingkai, filter, dan stiker bisa diubah nanti di langkah Hias.</p></div>
+    <div class="setup">
+      <div class="card"><div class="lays" id="lays"></div><div id="tpls" hidden></div></div>
+      <aside class="card summary">
+        <div class="lbl">Pilihanmu</div>
+        <div class="sum-prev" id="sumPrev"></div>
+        <h2 id="sumName"></h2><p class="muted" id="sumInfo"></p>
+        <div class="lbl">Timer jepret</div>
+        <div class="seg" role="group" aria-label="Timer"><button type="button" data-timer="3">3 detik</button><button type="button" data-timer="5">5 detik</button></div>
+        <button class="btn btn--cta btn--block" data-go="template">Lanjut pilih template</button>
+      </aside>
+    </div>
+    <div class="actions"><button class="btn btn--outline" data-go="home">Kembali ke beranda</button></div>
+  </section>
 
-            <section class="booth__result">
-                <canvas id="strip" class="strip" aria-label="Hasil strip foto"></canvas>
-                <div class="booth__controls" id="actions" hidden>
-                    <button class="btn btn--cta" id="downloadBtn" type="button">Unduh</button>
-                    <button class="btn btn--outline" id="saveBtn" type="button">Simpan ke album</button>
-                    <button class="btn btn--outline" id="retakeBtn" type="button">Ulangi</button>
-                    <a class="btn btn--outline" href="album.html" data-requires-login="album"
-                        >Lihat riwayat</a
-                    >
-                    <p class="hint" id="limitHint"></p>
-                </div>
-            </section>
+  <!-- ===== LANGKAH 2: PILIH TEMPLATE (BINGKAI) =====
+                 Kartu #tplFav (5 template favorit) dan #tplMore (bingkai lain) diisi buildTemplates(). Pratinjau memakai foto contoh. Data bingkai: const FR. -->
+  
+<section id="v-template" class="view" hidden>
+    <div class="pagehead"><h1>Pilih template</h1><p>Hanya template yang cocok dengan tata letakmu yang tampil. Angka di kotak = urutan pengambilan foto.</p></div>
+    <div class="setup">
+      <div class="card">
+        <p class="muted" id="tplSizeNote"></p>
+        <h3 class="grp">Template favorit</h3><div class="tplgrid" id="tplFav"></div>
+        <h3 class="grp">Template gambar <span class="grp-note">hasil persis seperti gambar template</span></h3><div class="tplgrid" id="tplTi"></div>
+        <h3 class="grp">Bingkai lainnya</h3><div class="tplgrid" id="tplMore"></div>
+      </div>
+      <aside class="card summary">
+        <div class="lbl">Pratinjau</div>
+        <div class="sum-prev tall" id="tplPrev"></div>
+        <h2 id="tplName"></h2><p class="muted" id="tplInfo"></p>
+        <input type="file" id="bgFile" accept="image/png,image/jpeg,image/webp" hidden>
+        <p class="muted tiny" id="tplKeep" hidden>Foto yang sudah kamu ambil tetap dipakai. Hanya template yang sesuai ukuran tampil di sini.</p>
+        <button class="btn btn--cta btn--block" id="tplGo" data-go="shoot">Lanjut ke kamera</button>
+        <button class="btn btn--outline btn--block" id="tplBack" data-go="setup">Ganti tata letak</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== LANGKAH 3: JEPRET =====
+                 Kiri: kamera (#cam, video #video, hitung mundur #count, chip timer #camTimer, info "Foto x dari n" #camStat, pesan kamera #hint).
+                 Kanan: pratinjau template (#liveCv), timer 3/5 detik, tombol Mulai jepret (#btnAuto). Logika: shoot() dan auto() di photobooth.js. -->
+  
+<section id="v-shoot" class="view" hidden>
+    <div class="shoot">
+      <div class="card">
+        <!-- AREA KAMERA: semua overlay (hitung mundur, kilatan #flash, ide pose #pose, tombol Batal) berada DI DALAM kotak ini -->
+        
+<div class="cam" id="cam">
+          <video id="video" autoplay playsinline muted></video>
+          <div id="hint"><strong>Kamera belum aktif</strong><span>Izinkan akses saat browser meminta, atau pakai Foto contoh.</span></div>
+          <button class="btn btn--outline btn--sm" id="btnCancel" type="button">Batal</button><div id="pose"></div><div id="count" aria-live="assertive"><svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/></svg><b id="countNum"></b></div><button class="camtimer" id="camTimer" type="button" aria-label="Ganti timer">Timer 3 dtk</button><div class="camstat" id="camStat" aria-live="polite"></div><div id="flash"></div>
+        </div>
+        <div class="row">
+          <select id="camSel" aria-label="Pilih kamera" hidden></select>
+          <button class="btn btn--outline btn--sm" id="btnCam">Nyalakan kamera</button>
+          <button class="btn btn--outline btn--sm" id="btnSample" type="button">Foto contoh</button>
+          <!-- [FITUR] UNDANG TEMAN: ruang foto bersama (room). Hanya aktif jika tata letak 2 foto atau lebih. Logika: bagian "FOTO BERSAMA" di photobooth.js -->
+          <button class="btn btn--outline btn--sm" id="btnInvite" type="button">👫 Undang teman</button>
+          <button class="chip" type="button" id="btnTips" aria-pressed="true">Ide pose: nyala</button>
+          <button class="chip" type="button" id="btnMirror" aria-pressed="true">Cermin: nyala</button>
+        </div>
+      </div>
+      <div class="card side">
+        <div class="between"><h2>Foto kamu</h2><span class="muted" id="prog">0/0</span></div>
+        <div class="bar2"><i id="barI"></i></div>
+        <!-- PRATINJAU TEMPLATE LANGSUNG: foto muncul di template setiap selesai diambil. Tombol ↻ per foto dibuat renderLive() di photobooth.js -->
+        <div class="live"><div class="livewrap"><canvas id="liveCv" aria-label="Pratinjau hasil di template"></canvas><div id="liveBtns"></div></div></div>
+        <p class="muted tiny roomnote" id="roomNote" hidden></p>
+        <div class="between"><h3>Timer</h3><div class="seg"><button data-timer="3">3 detik</button><button data-timer="5">5 detik</button></div></div>
+        <button class="btn btn--cta" id="btnAuto" disabled>Mulai jepret</button>
+        <button class="btn btn--outline btn--sm btn--block" id="btnReset" type="button">Ulang semua foto</button>
+      </div>
+    </div>
+    <div class="actions"><button class="btn btn--outline" data-go="template">← Template</button><button class="btn btn--cta" id="btnNext" data-go="edit" disabled>Lanjut hias →</button></div>
+  </section>
+
+  <!-- ===== LANGKAH 4: HIAS =====
+                 Kiri: pratinjau hasil (canvas #strip). Kanan: tab (#tabs) + pilihan (#opts). Tab didefinisikan di const TABS, isinya di buildOpts(). -->
+  
+<section id="v-edit" class="view" hidden>
+    <div class="stage"><canvas id="strip" aria-label="Pratinjau hasil"></canvas></div>
+    <div class="panel card">
+      <div class="row" style="margin:0 0 .8rem"><button class="btn btn--outline btn--sm" data-go="template" type="button">Ganti template</button></div>
+      <div class="chips" id="tabs"></div>
+      <div class="opts" id="opts"></div>
+      <div class="actions in"><button class="btn btn--outline btn--sm" data-go="shoot">← Foto</button><button class="btn btn--cta" data-go="result">Simpan hasil →</button></div>
+    </div>
+  </section>
+
+  <!-- ===== LANGKAH 5: SIMPAN =====
+                 Hasil: Foto PNG (#out, ukuran #size) dan Live photo animasi (#gifBox). Tombol unduh dibatasi gate() (batas guest). Simpan album butuh login. -->
+  
+<section id="v-result" class="view" hidden>
+    <div class="pagehead"><h1>Hasil kamu siap! </h1><p>Unduh sesukamu, simpan ke album, atau bagikan ke teman.</p></div>
+    <div class="results">
+      <figure class="card"><figcaption>Foto</figcaption><div class="gifbox"><img id="out" alt="Hasil foto"></div>
+        <label class="size">Ukuran unduhan <select id="size"><option value="0">Asli, paling tajam (untuk layar)</option><option value="600x1800">Strip 2×6 inci (600×1800)</option><option value="1200x1800">Kartu 4R / 4×6 inci (1200×1800)</option><option value="900x1200">Kartu 3×4 inci (900×1200)</option></select></label>
+        <div class="row"><button class="btn btn--cta btn--sm" id="btnSave">Unduh PNG</button><button class="btn btn--outline btn--sm" id="btnShare">Bagikan</button></div></figure>
+      <figure class="card"><figcaption>Live photo</figcaption><div class="gifbox" id="gifBox"></div>
+        <div class="row"><button class="btn btn--cta btn--sm" id="btnGif" disabled>Unduh live photo</button></div></figure>
+    </div>
+    <p class="hint2 limit" id="limitHint"></p>
+    <div class="actions center"><button class="btn btn--cta btn--sm" id="btnQR">Kirim ke HP (QR)</button><button class="btn btn--outline btn--sm" data-go="edit">← Edit lagi</button><button class="btn btn--outline btn--sm" id="btnAlbum">Simpan ke album</button><button class="btn btn--outline btn--sm" data-go="album">Lihat album</button><button class="btn btn--cta btn--sm" id="btnNew">Foto baru </button></div>
+  </section>
+
+  <!-- ===== HALAMAN TEMAN (dibuka dari QR "Undang teman" di HP): kamera HP dipakai untuk foto giliran teman.
+                 Logika: startJoin() di photobooth.js. Host mengirim aba-aba "shoot", HP menghitung mundur lalu mengirim fotonya balik (PeerJS). ===== -->
+  <section id="v-join" class="view" hidden>
+    <div class="pagehead"><h1>Foto bareng</h1><p id="joinStat" class="qrstat">Menghubungkan…</p></div>
+    <div class="card join">
+      <div class="cam" id="jcam">
+        <video id="jvideo" autoplay playsinline muted></video>
+        <div id="jhint"><strong>Menyalakan kamera…</strong><span>Izinkan akses kamera saat browser meminta.</span></div>
+        <div id="jcount" aria-live="assertive"><svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/></svg><b id="jcountNum"></b></div>
+        <div id="jflash"></div>
+      </div>
+      <p class="muted" id="joinTurn">Tunggu giliranmu. Foto diambil bergantian dengan temanmu.</p>
+      <div class="actions center"><button class="btn btn--outline btn--sm" id="btnJoinRetry" type="button" hidden>Coba aktifkan kamera lagi</button><button class="btn btn--outline" id="btnJoinLeave" type="button">Keluar dari room</button></div>
+    </div>
+  </section>
+
+  <!-- ===== HALAMAN PENERIMA (dibuka dari QR di HP): menerima foto/video/GIF langsung dari perangkat lain (PeerJS) ===== -->
+  
+<section id="v-terima" class="view" hidden>
+    <div class="pagehead"><h1>Terima foto</h1><p id="recvStat" class="qrstat">Menghubungkan…</p></div>
+    <div class="bar2"><i id="recvBar"></i></div>
+    <div class="results" id="recvItems" style="margin-top:16px"></div>
+    <p class="hint2">Di iPhone: kalau tombol Simpan tidak langsung menyimpan, tekan lama gambarnya lalu pilih "Simpan ke Foto".</p>
+    <div class="actions"><button class="btn btn--outline" data-go="home">Ke beranda</button><button class="btn btn--cta" data-go="setup">Foto sendiri </button></div>
+  </section>
+
+  
         </main>
         <footer class="footer" id="site-footer"></footer>
-        <script src="../assets/js/layout.js"></script>
+        <!-- POP-UP KIRIM KE HP: QR + tautan. Logika: openQR() dan serve() di photobooth.js (pustaka vendor/qrcode.js, peerjs.min.js) -->
+        
+<!-- POP-UP UNDANG TEMAN: QR + tautan room foto bersama (PeerJS). Logika: openRoom() di photobooth.js -->
+<div id="roomModal" class="sheet" role="dialog" aria-modal="true" aria-label="Undang teman">
+  <div class="card qr">
+    <h2>Undang teman</h2>
+    <p class="muted">Minta temanmu memindai QR ini dari HP, atau kirim link-nya. Foto diambil <b>bergantian</b>: kamu, lalu temanmu, dan seterusnya.</p>
+    <canvas id="roomCanvas" width="280" height="280" aria-label="Kode QR undangan"></canvas>
+    <p class="qrstat" id="roomStat">Menyiapkan…</p>
+    <div class="row"><input type="text" id="roomLink" readonly aria-label="Link undangan"><button class="btn btn--outline btn--sm" id="roomCopy" type="button">Salin link</button></div>
+    <p class="tiny muted">Jangan tutup halaman ini selama foto bersama. Foto tidak diunggah ke server; PeerJS hanya mempertemukan dua perangkat.</p>
+    <div class="row" style="justify-content:center"><button class="btn btn--outline btn--sm" id="roomEnd" type="button">Akhiri room</button><button class="btn btn--cta btn--sm" id="roomClose" type="button">Tutup</button></div>
+  </div>
+</div>
+
+<div id="qrModal" class="sheet" role="dialog" aria-modal="true" aria-label="Kirim ke HP">
+  <div class="card qr">
+    <h2>Kirim ke HP</h2>
+    <p class="muted">Pindai QR dengan kamera HP untuk menyimpan foto dan live photo. File dikirim langsung antar perangkat.</p>
+    <canvas id="qrCanvas" width="280" height="280" aria-label="Kode QR"></canvas>
+    <p class="qrstat" id="qrStat">Menyiapkan…</p>
+    <div class="row"><input type="text" id="qrLink" readonly aria-label="Link"><button class="sm" id="qrCopy">Salin link</button></div>
+    <p class="tiny muted">Jangan tutup halaman ini sebelum unduhan di HP selesai. Foto tidak diunggah ke server. Layanan PeerJS hanya mempertemukan dua perangkat.</p>
+    <button class="sm" id="qrClose">Tutup</button>
+  </div>
+</div>
+
+        <!-- SCRIPT: layout.js (header/login/tema) -> tutorial.js (pengunjung baru) -> vendor (QR & transfer HP) -> albumdb.js (penyimpanan album) -> photobooth.js (SEMUA logika photobooth) -->
+        
+<script src="../assets/js/layout.js"></script>
+        <script src="../assets/js/template-images.js"></script>
+        <script src="../assets/js/frames-data.js"></script>
         <script src="../assets/js/tutorial.js"></script>
+        <script src="../assets/js/vendor/qrcode.js"></script>
+        <script src="../assets/js/vendor/peerjs.min.js"></script>
+        <script src="../assets/js/albumdb.js"></script>
         <script src="../assets/js/photobooth.js"></script>
     </body>
 </html>

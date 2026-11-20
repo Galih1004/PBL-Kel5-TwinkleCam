@@ -1,710 +1,440 @@
-/* =========================================================
-   TWINKLE CAM — Gaya halaman lain & komponen bersama
-   (dimuat setelah style.css)
-   ========================================================= */
+/* =====================================================================
+   TWINKLE CAM — pages.css  (GAYA PER HALAMAN)
+   Peta bagian (cari teks "[BAGIAN]" / "[FITUR]" untuk melompat):
+   - Dasar halaman (.page, .label)          - BERANDA: hero, ticker, statistik, fitur, FAQ
+   - PHOTOBOOTH: stepper, pemilih layout, template, kamera, hitung mundur, hias, hasil, QR
+   - TEMPLATES, ALBUM, LOGIN
+   Catatan penting: file ini ditulis bertahap. Jika sebuah selector muncul lebih dari sekali,
+   aturan PALING BAWAH menang (mis. .hero, .lays, .mini, #count). Ubah yang paling bawah.
+   ===================================================================== */
+/* [BAGIAN] kerangka halaman (lebar maksimum & padding) */
+.page{max-width:var(--wrap);margin-inline:auto;padding:clamp(2rem,5vw,3.5rem) clamp(1.1rem,4vw,2.5rem) 4rem;width:100%}
+.page__title{font-size:clamp(1.9rem,4vw,2.6rem);font-weight:700}
+.page__lead{color:var(--text-soft);margin:.5rem 0 2rem;max-width:36rem}
+.center{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-top:2.2rem}
+.hint{flex-basis:100%;font-size:.85rem;color:var(--text-soft)}
+/* [FITUR] label kecil bernomor di atas daftar pilihan */
+.label{display:flex;align-items:center;gap:.6rem;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-soft);margin:1.3rem 0 .7rem}
+.label:first-child{margin-top:0}
+.label::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--surface-2);color:var(--text);font-size:.72rem}
 
-/* ---------- Umum ---------- */
-.center {
-    text-align: center;
-}
-.btn--block {
-    width: 100%;
-}
+/* ===== [BAGIAN] BERANDA — hero (judul + kolase), langkah cara pakai ===== */
+/* [BAGIAN] HERO beranda: 2 kolom (teks | kolase). Ditimpa lagi di blok "penyesuaian hero" paling bawah */
+.hero{max-width:var(--wrap);margin-inline:auto;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:clamp(2rem,6vw,5rem);padding:clamp(2.5rem,7vw,5.5rem) clamp(1.1rem,4vw,2.5rem)}
+.hero__title{font-size:clamp(2.4rem,5.6vw,4.4rem);font-weight:700;letter-spacing:-.04em}
+.hero__accent{display:block;background:linear-gradient(100deg,var(--accent),var(--accent-2),var(--warm),var(--accent-2),var(--accent));background-size:250% 100%;animation:shine 8s linear infinite;-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero__desc{margin:1.3rem 0 2rem;color:var(--text-soft);font-size:1.1rem;max-width:30rem}
+.hero__visual{position:relative;display:grid;place-items:center;padding:1rem}
+.sparkle{position:absolute;color:var(--warm);font-size:1rem;opacity:.7;animation:tw 4s ease-in-out infinite,drift 9s ease-in-out infinite alternate}
+.sparkle--1{left:8%;top:12%}.sparkle--2{right:6%;top:24%;font-size:1.4rem;animation-delay:-1s}.sparkle--3{left:2%;bottom:30%;animation-delay:-2s}.sparkle--4{right:14%;bottom:8%;animation-delay:-3s}.sparkle--5{display:none}
+@keyframes tw{50%{opacity:.25;transform:scale(.7)}}
+/* [FITUR] STRIP FOTO di hero (animasi cetak foto: .is-shooting, dikontrol main.js) */
+.frame{position:relative;width:min(100%,270px);display:grid;gap:10px;padding:14px 14px 18px;background:#fff;color:#0d0a22;border-radius:6px;box-shadow:var(--shadow);rotate:3deg;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s var(--ease),rotate .3s var(--ease);animation:bob 6s ease-in-out infinite}
+.frame:hover{rotate:0deg}
+.frame__photo{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;border-radius:3px}
+.frame__photo img{width:100%;height:100%;object-fit:cover}
+.frame__caption{font:1.1rem var(--font-script);text-align:center;padding-top:.2rem}
+.frame__spark{color:var(--accent)}
+.frame__flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.frame.is-shooting .frame__flash{animation:fb .6s ease-out}
+.frame.is-shooting .frame__photo img{animation:dev 1s var(--ease)}
+.frame.is-shooting .frame__photo:nth-child(2) :is(img,.frame__flash){animation-delay:.25s}
+.frame.is-shooting .frame__photo:nth-child(3) :is(img,.frame__flash){animation-delay:.5s}
+@keyframes fb{0%{opacity:.95}100%{opacity:0}}
+@keyframes dev{0%{filter:brightness(2.2) blur(6px)}100%{filter:none}}
+.section{max-width:var(--wrap);margin-inline:auto;padding:clamp(3rem,7vw,5rem) clamp(1.1rem,4vw,2.5rem);border-top:1px solid var(--line)}
+.section__title{font-size:clamp(1.6rem,3.4vw,2.2rem);text-align:center;margin-bottom:2.4rem}
+/* [BAGIAN] kartu 4 langkah "Cara pakai" */
+.steps{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.step{padding:1.4rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.step__no{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--gradient);color:var(--on-accent);font-weight:700;font-size:.85rem;margin-bottom:1rem}
+.step h3{font-size:1.05rem;margin-bottom:.4rem}.step p{font-size:.92rem;color:var(--text-soft)}
 
-.page {
-    max-width: 1200px;
-    min-height: calc(100vh - var(--header-h) - 80px);
-    margin: 0 auto;
-    padding: 3rem clamp(1.25rem, 5vw, 4rem) 4rem;
-}
-.page__title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-}
-.page__lead {
-    margin: 0.5rem 0 2.5rem;
-    color: var(--text-soft);
-    max-width: 36rem;
-}
+/* ===== [BAGIAN] PHOTOBOOTH lama (kolom kamera + panel). Sebagian ditimpa oleh blok "ALUR PHOTOBOOTH" di bawah ===== */
+.booth{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(1.2rem,3vw,2.5rem);align-items:start}
+.booth__head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.cam{position:relative;aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.cam video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.cam__msg{position:absolute;inset:0;display:grid;place-items:center;padding:1.5rem;text-align:center;color:var(--text-soft);background:var(--surface)}
+.cam__count{position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(6rem,18vw,10rem);font-weight:300;color:#fff;text-shadow:0 6px 30px rgba(0,0,0,.5);pointer-events:none}
+.cam__flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.cam__flash.is-on{animation:fb .5s ease-out}
+.cam__progress{position:absolute;left:14px;top:14px;background:var(--bg);color:var(--text);padding:.25rem .85rem;border-radius:99px;font-size:.82rem;font-weight:600}
+.cam__progress:empty{display:none}
+.booth__controls{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem;align-items:center}
+.booth__cam .booth__controls .btn--cta{flex:1 1 12rem;padding:1rem 1.6rem;font-size:1.05rem}
+.booth__side{display:grid;gap:1.2rem;position:sticky;top:calc(var(--header-h) + 1.2rem)}
+.panel{counter-reset:s;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.chip{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .9rem;border:1px solid var(--line);border-radius:99px;font-size:.88rem;font-weight:500;background:transparent;transition:background-color .15s,border-color .15s,transform .15s var(--ease)}
+.chip:active{transform:scale(.97)}
+@media(hover:hover){.chip:hover{border-color:var(--line-strong)}}
+.chip.is-active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.chip__meta{font-size:.72rem;opacity:.65}
+.dot{width:14px;height:14px;border-radius:50%;flex:none;border:1px solid var(--line-strong)}
+.booth__result{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.2rem;display:grid;justify-items:center;gap:1rem}
+.strip{width:auto;max-width:100%;max-height:min(40vh,460px);height:auto;border-radius:4px;box-shadow:var(--shadow)}
+.booth__result .booth__controls{margin:0;width:100%}
+.booth__result .booth__controls .btn{flex:1 1 auto;padding:.5rem .8rem;font-size:.82rem}
+.booth__result #downloadBtn{flex-basis:100%;padding:.8rem 1rem;font-size:.95rem}
+@media(max-height:780px){.booth__side{position:static}}
 
-.section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 3rem clamp(1.25rem, 5vw, 4rem) 5rem;
-}
-.section__title {
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    font-weight: 700;
-    margin-bottom: 2rem;
-}
+/* ===== [BAGIAN] HALAMAN TEMPLATES — kartu template (.tpl-grid, .tpl) ===== */
+/* [BAGIAN] grid kartu di halaman Templates */
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1.4rem}
+.tpl{display:grid;gap:.8rem;padding:1rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.tpl__strip{position:relative;display:grid;gap:6px;padding:10px 10px 8px;border-radius:8px;text-align:center;font:.9rem var(--font-script)}
+.tpl__strip img{aspect-ratio:4/3;width:100%;object-fit:cover;border-radius:3px}
+.tpl__new{position:absolute;right:8px;top:8px;background:var(--warm);color:#0d0a22;font:700 .68rem var(--font-main);padding:.1rem .55rem;border-radius:99px}
+.tpl__name{font-size:1.05rem;display:flex;justify-content:space-between;align-items:baseline}
+.tpl__name small{font-size:.78rem;color:var(--text-soft);font-weight:400}
 
-/* ---------- Langkah (Beranda) ---------- */
-.steps {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    list-style: none;
-    margin-bottom: 2.5rem;
-}
-.step {
-    padding: 1.5rem;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    background: var(--surface);
-}
-.step__no {
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    margin-bottom: 1rem;
-    border-radius: 50%;
-    background: var(--gradient);
-    color: #fff;
-    font-weight: 700;
-}
-.step h3 {
-    font-size: 1.15rem;
-    margin-bottom: 0.35rem;
-}
-.step p {
-    color: var(--text-soft);
-}
+/* ===== [BAGIAN] HALAMAN ALBUM — grid hasil (.album-grid, .album-item), panel terkunci (.locked), penampil (.lightbox) ===== */
+/* [BAGIAN] grid hasil di Album */
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1.2rem}
+.album-item{display:grid;gap:.6rem;text-align:left;padding:.8rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);transition:transform .2s var(--ease),border-color .2s}
+.album-item img{width:100%;border-radius:4px}.album-item span{font-size:.8rem;color:var(--text-soft)}
+@media(hover:hover){.album-item:hover{transform:translateY(-3px);border-color:var(--line-strong)}}
+.empty,.locked{display:grid;justify-items:center;gap:.9rem;text-align:center;padding:3rem 1.5rem;border:1px dashed var(--line-strong);border-radius:var(--r);color:var(--text-soft)}
+.locked h2{color:var(--text)}.locked__icon{font-size:2rem}
+.lightbox{margin:auto;border:0;background:var(--surface);color:var(--text);border-radius:20px;padding:1.2rem;max-width:min(92vw,420px);text-align:center}
+.lightbox::backdrop{background:rgba(8,5,18,.75)}
+.lightbox img{max-height:70vh;width:auto;margin:0 auto 1rem;border-radius:4px}
+.lightbox .booth__controls{justify-content:center;margin-top:0}
 
-/* ---------- Footer ---------- */
-.footer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.5rem 2rem;
-    padding: 1.75rem clamp(1.25rem, 5vw, 4rem);
-    border-top: 1px solid var(--line);
-    color: var(--text-soft);
-    font-size: 0.9rem;
-}
-.footer__brand {
-    font-family: var(--font-script);
-    color: var(--text);
-}
+/* ===== [BAGIAN] HALAMAN LOGIN — kartu (.auth__card), tab (.tabs/.tab), kolom isian (.field) ===== */
+.auth{display:grid;place-items:center}
+.auth__card{width:min(100%,420px);background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:1.6rem;box-shadow:var(--shadow)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:.3rem;padding:.3rem;background:var(--surface-2);border-radius:99px;margin-bottom:1.4rem}
+.tab{padding:.55rem;border-radius:99px;font-weight:600;font-size:.92rem;color:var(--text-soft);transition:background-color .15s,color .15s}
+.tab.is-active{background:var(--text);color:var(--bg)}
+.field{display:grid;gap:.4rem;margin-bottom:1rem;font-size:.85rem;font-weight:600}
+.field input{padding:.8rem 1rem;border-radius:12px;border:1px solid var(--line-strong);background:var(--bg);color:var(--text);font:inherit;font-weight:400}
+.field input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.form-error{min-height:1.3rem;margin-bottom:.6rem;color:var(--error);font-size:.88rem}
+.note{margin-top:1rem;font-size:.8rem;color:var(--text-soft);text-align:center}
 
-/* ---------- Toast ---------- */
-.toast {
-    position: fixed;
-    left: 50%;
-    bottom: 2rem;
-    z-index: 100;
-    translate: -50% 0;
-    padding: 0.8rem 1.4rem;
-    border-radius: 999px;
-    background: var(--text);
-    color: var(--bg);
-    font-weight: 600;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    animation: toast-in 0.35s var(--ease);
+@media(max-width:900px){
+ .booth{grid-template-columns:minmax(0,1fr)}.booth__side{position:static}
+ .hero{grid-template-columns:1fr}.hero__visual{order:-1;padding:0}.frame{width:min(60%,220px)}
+ .steps{grid-template-columns:1fr 1fr}
+ .strip{max-height:52vh}
 }
-@keyframes toast-in {
-    from {
-        opacity: 0;
-        translate: -50% 16px;
-    }
-}
+@media(max-width:520px){.steps{grid-template-columns:1fr}.chip{padding:.5rem .85rem}}
 
-/* ---------- Photobooth ---------- */
-.booth {
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: start;
-}
+/* Animasi beranda */
+.hero__visual{isolation:isolate}
+.hero__visual::before,.hero__visual::after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(46px);opacity:.28;animation:blob 12s ease-in-out infinite alternate}
+.hero__visual::before{width:60%;aspect-ratio:1;left:2%;top:4%;background:var(--accent)}
+.hero__visual::after{width:50%;aspect-ratio:1;right:2%;bottom:2%;background:var(--accent-2);animation-delay:-6s}
+.js .hero__title,.js .hero__desc,.js .hero .btn--cta{animation:up .8s var(--ease) both}
+.js .hero__desc{animation-delay:.12s}.js .hero .btn--cta{animation-delay:.24s}
+.js .hero__visual{animation:up 1s var(--ease) .15s both}
+.reveal{opacity:0;translate:0 26px;transition:opacity .7s var(--ease),translate .7s var(--ease);transition-delay:calc(var(--i,0)*90ms)}
+.reveal.is-in{opacity:1;translate:0 0}
+@keyframes up{from{opacity:0;translate:0 24px}}
+@keyframes bob{50%{translate:0 -10px}}
+@keyframes shine{to{background-position:250% 0}}
+@keyframes drift{to{translate:10px -14px}}
+@keyframes blob{to{transform:translate(8%,-6%) scale(1.15)}}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;translate:none}.hero__accent{animation:none}}
 
-.cam {
-    position: relative;
-    margin-top: 1.5rem;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    border-radius: 20px;
-    background: #1a1535;
-    border: 1px solid var(--line);
-}
-.cam video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scaleX(-1);
-}
-.cam__msg {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    padding: 2rem;
-    text-align: center;
-    color: #c9c6dc;
-}
-.cam__msg[hidden] {
-    display: none;
-}
-.cam__count {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    color: #fff;
-    font-size: clamp(5rem, 16vw, 9rem);
-    font-weight: 800;
-    text-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
-}
-.cam__flash {
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    opacity: 0;
-    pointer-events: none;
-}
-.cam__flash.is-on {
-    animation: flash 0.5s ease-out;
-}
-.cam__progress {
-    position: absolute;
-    left: 1rem;
-    bottom: 1rem;
-    padding: 0.25rem 0.8rem;
-    border-radius: 999px;
-    background: rgba(13, 10, 34, 0.7);
-    color: #fff;
-    font-size: 0.9rem;
-}
-.cam__progress:empty {
-    display: none;
-}
+/* ===== [BAGIAN] ALUR PHOTOBOOTH — stepper, kartu, tombol seg (timer), kamera, slot foto, hias, hasil, pop-up QR ===== */
+.flow{max-width:1100px}
+/* [FITUR] STEPPER: indikator langkah di atas photobooth (.on = langkah aktif, .past = selesai) */
+.stepper{list-style:none;display:flex;gap:.4rem;margin-bottom:1.8rem}
+.stepper li{flex:1;display:flex;align-items:center;gap:.6rem;padding:.55rem .8rem;border-radius:12px;border:1px solid var(--line);color:var(--text-soft);font-size:.88rem;font-weight:600}
+.stepper b{display:grid;place-items:center;width:24px;height:24px;flex:none;border-radius:50%;background:var(--surface-2);color:var(--text);font-size:.75rem}
+.stepper li.on{color:var(--text);border-color:var(--accent)}.stepper li.on b{background:var(--gradient);color:var(--on-accent)}
+.stepper li.past b{background:var(--accent);color:var(--on-accent)}
+body[data-view=terima] .stepper{display:none}
+.pagehead{margin-bottom:1.6rem}.pagehead h1{font-size:clamp(1.7rem,3.6vw,2.4rem)}.pagehead p{color:var(--text-soft);margin-top:.4rem;max-width:40rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1.3rem}
+.mt{margin-top:1rem}.between{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.muted{color:var(--text-soft);font-size:.9rem}.tiny{font-size:.78rem}.hint2{color:var(--text-soft);font-size:.85rem;margin:.6rem 0}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:.8rem}
+.actions{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:space-between;margin-top:1.4rem}.actions.center{justify-content:center}.actions.in{margin-top:1rem}
+.seg{display:inline-flex;gap:.25rem;padding:.25rem;background:var(--surface-2);border-radius:99px}
+.seg button{padding:.4rem .95rem;border-radius:99px;font-size:.85rem;font-weight:600;color:var(--text-soft)}
+.seg button[aria-pressed=true]{background:var(--text);color:var(--bg)}
+.lays{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.8rem}
+.lay{display:grid;gap:.45rem;justify-items:center;text-align:center;padding:.9rem .6rem;border:1px solid var(--line);border-radius:14px;background:var(--surface-2);font-size:.85rem;transition:border-color .15s,transform .15s var(--ease)}
+.lay:active{transform:scale(.97)}.lay b{font-weight:600}.lay small{color:var(--text-soft)}
+.lay[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.mini{display:grid;grid-template-columns:repeat(var(--c),1fr);gap:3px;width:56px;padding:5px;background:var(--bg);border-radius:6px}
+.mini u{aspect-ratio:4/3;background:var(--accent);opacity:.85;border-radius:2px;text-decoration:none}
+/* [BAGIAN] LANGKAH JEPRET: grid kamera | panel slot foto */
+.shoot{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:1.2rem;align-items:start}
+.cam #hint{position:absolute;inset:0;display:grid;place-content:center;gap:.4rem;text-align:center;padding:1.5rem;background:var(--surface);color:var(--text-soft)}
+.cam.nomirror video{transform:none}
+/* [FITUR] HITUNG MUNDUR di kamera (angka + cincin). Aturan terbaru ada di blok "TIMER & HITUNG MUNDUR" paling bawah */
+#count{position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(6rem,18vw,10rem);font-weight:300;color:#fff;text-shadow:0 6px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none}
+#count.on{animation:pop .9s var(--ease) both}
+#pose{position:absolute;left:50%;bottom:14px;translate:-50% 0;background:var(--bg);color:var(--text);padding:.35rem .9rem;border-radius:99px;font-size:.85rem;font-weight:600;opacity:0;transition:opacity .2s;white-space:nowrap}
+#pose.on{opacity:1}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .08s}#flash.on{opacity:.95}
+#btnCancel{position:absolute;right:12px;top:12px;display:none}.cam.busy #btnCancel{display:inline-flex}
+.spin{width:34px;height:34px;border-radius:50%;border:3px solid var(--line-strong);border-top-color:var(--accent);animation:sp .8s linear infinite}@keyframes sp{to{rotate:360deg}}
+.side{display:grid;gap:.8rem}.side .btn--cta{width:100%}
+.bar2{height:5px;border-radius:99px;background:var(--surface-2);overflow:hidden}.bar2 i{display:block;height:100%;width:0;background:var(--gradient);transition:width .3s var(--ease)}
+/* [FITUR] SLOT FOTO (kotak kecil hasil jepretan; tombol ✕ = ulang) */
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:.5rem}
+.slot{position:relative;aspect-ratio:4/3;border-radius:10px;border:1px dashed var(--line-strong);display:grid;place-items:center;overflow:hidden;color:var(--text-soft);font-weight:700}
+.slot.ok{border-style:solid}.slot canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.slot.ok b{position:absolute;left:6px;bottom:4px;font-size:.7rem;background:var(--bg);color:var(--text);padding:0 .5rem;border-radius:99px}
+.rt{position:absolute;right:4px;top:4px;z-index:2;width:22px;height:22px;border-radius:50%;background:var(--bg);color:var(--text);font-size:.7rem}
+/* [BAGIAN] LANGKAH HIAS: pratinjau kiri | panel pilihan kanan */
+#v-edit:not([hidden]){display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:1.2rem;align-items:start}
+.stage{display:grid;justify-items:center;position:sticky;top:calc(var(--header-h) + 1rem)}
+#strip{max-width:100%;max-height:calc(100vh - 9rem);width:auto;height:auto;border-radius:4px;box-shadow:var(--shadow);touch-action:none}
+#tabs{display:flex;flex-wrap:wrap;gap:.4rem}
+/* [FITUR] DAFTAR PILIHAN di Hias (bingkai, filter, stiker, teks) — .tile = kartu pilihan */
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:.6rem;margin-top:1rem;max-height:46vh;overflow:auto;padding:.2rem}
+.opts.txt{display:block}.opts.emos{grid-template-columns:repeat(auto-fill,minmax(46px,1fr))}.opts.emos>p,.opts.emos>.ctl{grid-column:1/-1}
+.tile{display:grid;gap:.3rem;justify-items:center;padding:.4rem;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:.72rem;text-align:center;cursor:pointer}
+.tile canvas{width:100%;height:auto;border-radius:6px}.tile[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}.tile input[type=color]{width:100%;height:36px;border:0;background:none}
+.emo{font-size:1.5rem;padding:.3rem;border-radius:10px}.emo:hover{background:var(--hover)}
+.rg{display:grid;gap:.4rem;margin-bottom:1rem;font-weight:600;font-size:.9rem}.rg input{width:100%;accent-color:var(--accent)}
+.opts label{font-weight:600;font-size:.88rem}
+.opts input[type=text],.size select,.qr input{padding:.65rem .9rem;border-radius:12px;border:1px solid var(--line-strong);background:var(--bg);color:var(--text);font:inherit}
+.opts input[type=text]{width:100%;margin-top:.4rem}.ctl{display:flex;gap:.5rem;margin:.6rem 0}
+/* [BAGIAN] LANGKAH SIMPAN: kartu hasil foto / video / GIF (.gifbox) */
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.results figure{display:grid;gap:.8rem;align-content:start}.results figcaption{font-weight:700}
+.gifbox{display:grid;place-items:center;align-content:center;min-height:200px;background:var(--surface-2);border-radius:12px;padding:.6rem;text-align:center;color:var(--text-soft);font-size:.88rem;gap:.6rem}
+.gifbox img,.gifbox video{max-height:360px;max-width:100%;border-radius:6px}
+.size{display:grid;gap:.3rem;font-size:.82rem;color:var(--text-soft)}
+.limit{text-align:center;margin-top:1.2rem}
+/* [FITUR] POP-UP KIRIM KE HP (QR) */
+.sheet{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:rgba(8,5,18,.75);padding:1rem}.sheet.on{display:grid}
+.qr{width:min(100%,380px);text-align:center;display:grid;gap:.8rem;max-height:92vh;overflow:auto}
+.qr canvas{width:min(100%,240px);height:auto;margin:0 auto;background:#fff;border-radius:10px;padding:6px}
+.qr .row{flex-wrap:nowrap}.qr input{flex:1;min-width:0;font-size:.8rem}
+.qrstat{font-size:.88rem;color:var(--accent-text)}.qrstat.bad{color:var(--error)}
+.notice{display:flex;gap:1rem;align-items:center;justify-content:space-between;padding:.8rem 1rem;margin-bottom:1rem;border:1px solid var(--line-strong);border-radius:12px;font-size:.85rem;color:var(--text-soft)}
+#viewer.lightbox{width:min(92vw,460px)}#viewer .seg{margin-bottom:.8rem}#viewer video{max-height:70vh;max-width:100%;margin:0 auto 1rem;border-radius:4px}
+@media(max-width:900px){.shoot,#v-edit:not([hidden]){grid-template-columns:minmax(0,1fr)}.stage{position:static}.stepper span{display:none}.stepper li{justify-content:center}}
 
-.booth__controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin: 1.5rem 0;
-}
-.booth__controls[hidden] {
-    display: none;
-}
+/* ===== [BAGIAN] PEMILIH TATA LETAK (langkah 1: .lay-group, .lay, .mini SVG), PANEL RINGKASAN (.summary), pesan kamera (#hint), dan BERANDA lanjutan (ticker, statistik, kartu fitur, template favorit, FAQ, band) ===== */
+.setup{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:1.2rem;align-items:start}
+.lays{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem}
+/* [FITUR] PEMILIH TATA LETAK: grup (Strip, Kotak, ...) berisi kartu .lay; pratinjau = SVG .mini */
+.lay-group h3{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-soft);margin-bottom:.6rem}
+.lay-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
+.lay{position:relative;display:flex;flex-direction:column;align-items:center;gap:.15rem;min-height:196px;padding:.9rem .6rem .8rem;border:1px solid var(--line);border-radius:14px;background:var(--surface-2);text-align:center}
+.lp{display:grid;place-items:center;width:100%;height:112px;margin-bottom:.5rem}
+.mini{display:grid;grid-template-columns:repeat(var(--c),1fr);align-content:start;gap:3px;height:100%;max-width:100%;padding:6px 6px 16px;background:var(--bg);border-radius:6px;box-shadow:0 0 0 1px var(--line)}
+.mini u{aspect-ratio:4/3;background:var(--accent);opacity:.85;border-radius:2px;text-decoration:none}
+.lay b{font-size:.92rem;font-weight:600}.lay small{color:var(--text-soft);font-size:.78rem}
+.lay[aria-pressed=true]{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 2px var(--accent)}
+.lay[aria-pressed=true]::after{content:"";position:absolute;right:8px;top:8px;width:20px;height:20px;border-radius:50%;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a0f33' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/14px no-repeat}
+/* [FITUR] PANEL RINGKASAN kanan (langkah 1 dan 2): pratinjau besar + tombol lanjut */
+.summary{display:grid;gap:.9rem;position:sticky;top:calc(var(--header-h) + 1rem)}
+.lbl{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-soft)}
+.sum-prev{display:grid;place-items:center;height:190px;background:var(--surface-2);border-radius:12px;padding:.8rem}
+.sum-prev .mini{background:var(--surface)}.summary h2{font-size:1.25rem}
+.cam #hint{gap:.6rem}.cam #hint strong{color:var(--text);font-size:1.05rem}.cam #hint span{max-width:30rem;font-size:.9rem}
+#camSel{max-width:12rem;padding:.45rem .7rem;border-radius:99px;border:1px solid var(--line-strong);background:var(--bg);color:var(--text);font:inherit;font-size:.85rem}
+.header__cta{display:inline-flex}
+/* beranda */
+.eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-text);margin-bottom:1rem}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.7rem}
+.hero__facts{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin-top:1.8rem;color:var(--text-soft);font-size:.88rem}
+.hero__facts li::before{content:"";display:inline-block;width:6px;height:6px;margin-right:.5rem;border-radius:50%;background:var(--accent);vertical-align:middle}
+.hero__visual{min-height:440px}
+/* [FITUR] POLAROID melayang di kolase hero */
+.polaroid{position:absolute;width:150px;background:#fff;color:#0d0a22;padding:8px 8px 10px;border-radius:4px;box-shadow:var(--shadow);animation:bob 7s ease-in-out infinite}
+.polaroid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px}.polaroid figcaption{font:.95rem var(--font-script);text-align:center;padding-top:.3rem}
+.polaroid--l{left:0;top:8%;rotate:-9deg}.polaroid--r{right:0;bottom:6%;rotate:8deg;animation-delay:-3s}
+.tag{position:absolute;padding:.35rem .85rem;border-radius:99px;background:var(--surface);border:1px solid var(--line-strong);font-size:.8rem;font-weight:600;box-shadow:var(--shadow);animation:bob 6s ease-in-out infinite}
+.tag--1{right:4%;top:10%}.tag--2{left:6%;bottom:12%;animation-delay:-2s}
+.frame{position:relative;z-index:2}
+/* [FITUR] TICKER: teks berjalan di bawah hero */
+.ticker{overflow:hidden;border-block:1px solid var(--line);padding:.9rem 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.ticker__track{display:flex;gap:2.2rem;width:max-content;animation:marq 38s linear infinite}
+.ticker span{color:var(--text-soft);font-weight:600;white-space:nowrap}.ticker span::after{content:"✦";margin-left:2.2rem;color:var(--accent)}
+@keyframes marq{to{translate:-50% 0}}
+/* [FITUR] KARTU STATISTIK (angka naik, dikontrol main.js) */
+.stats{max-width:var(--wrap);margin-inline:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:3rem clamp(1.1rem,4vw,2.5rem) 0}
+.stats>div{padding:1.2rem;text-align:center;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.stats b{display:block;font-size:2.4rem;line-height:1.1;font-weight:700;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats span{color:var(--text-soft);font-size:.9rem}
+.section{border-top:0}
+/* [BAGIAN] KARTU FITUR (6 kartu) */
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.fcard{padding:1.5rem;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);transition:transform .25s var(--ease),border-color .25s}
+.fcard svg{color:var(--accent);margin-bottom:.9rem}.fcard h3{font-size:1.05rem;margin-bottom:.35rem}.fcard p{color:var(--text-soft);font-size:.92rem}
+@media(hover:hover){.fcard:hover{transform:translateY(-4px);border-color:var(--line-strong)}}
+/* [BAGIAN] TEMPLATE FAVORIT di beranda */
+.tplshow{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem}
+.tplc{display:grid;gap:.25rem;padding:.8rem;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);transition:transform .25s var(--ease)}
+.tplc__sw{aspect-ratio:3/4;border-radius:10px;margin-bottom:.5rem}.tplc small{color:var(--text-soft)}
+@media(hover:hover){.tplc:hover{transform:translateY(-4px)}}
+.section--narrow{max-width:760px}
+/* [FITUR] FAQ (details/summary) */
+.faq{border:1px solid var(--line);border-radius:14px;background:var(--surface);margin-bottom:.7rem}
+.faq summary{cursor:pointer;padding:1rem 1.2rem;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+.faq summary::after{content:"+";color:var(--accent-text);font-size:1.3rem;line-height:1}.faq[open] summary::after{content:"−"}
+.faq p{padding:0 1.2rem 1.1rem;color:var(--text-soft)}
+/* [BAGIAN] KARTU AJAKAN PENUTUP di beranda */
+.band{max-width:var(--wrap);margin:1rem auto 4rem;padding:3rem 1.5rem;text-align:center;border-radius:24px;background:var(--surface-2);border:1px solid var(--line);width:calc(100% - clamp(2.2rem,8vw,5rem))}
+.band h2{font-size:clamp(1.7rem,4vw,2.6rem);margin-bottom:.5rem}.band p{color:var(--text-soft);margin-bottom:1.5rem}
+@media(max-width:900px){.setup{grid-template-columns:minmax(0,1fr)}.summary{position:static}.feat{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.hero__visual{min-height:380px}.polaroid{width:110px}.header__cta{display:none}}
+@media(max-width:560px){.lays{grid-template-columns:minmax(0,1fr)}.feat{grid-template-columns:1fr}.polaroid--l{left:-2%}.polaroid--r{right:-2%}}
+@media(prefers-reduced-motion:reduce){.ticker__track,.polaroid,.tag{animation:none}}
 
-.label {
-    margin: 1.5rem 0 0.6rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-soft);
-}
-.chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-}
-.chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1.1rem;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    font-size: 0.92rem;
-    transition:
-        background 0.2s,
-        border-color 0.2s;
-}
-.chip:hover {
-    background: var(--hover);
-}
-.chip.is-active {
-    border-color: var(--pink);
-    background: rgba(255, 111, 177, 0.18);
-}
-.dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-}
+.mini{display:block;height:100%;width:auto;max-width:100%;padding:0;background:none;box-shadow:none;border-radius:0}
+.mini .bg{fill:var(--bg);stroke:var(--line-strong);stroke-width:4}.mini .c{fill:var(--accent);opacity:.9}
+.sum-prev .mini{height:100%}.sum-prev .mini .bg{fill:var(--surface)}
+/* penyesuaian hero agar muat satu layar */
+.hero{padding-block:clamp(1.5rem,4vw,3rem)}
+.hero__title{font-size:clamp(2.3rem,4.6vw,3.9rem)}
+.hero .frame{width:min(100%,235px)}
+.hero__visual{min-height:0}
+.polaroid{width:130px;z-index:1}.polaroid--l{left:2%;top:10%}.polaroid--r{right:2%;bottom:6%}
+.tag{z-index:3}.tag--1{right:6%;top:6%}.tag--2{left:8%;bottom:8%}
+@media(max-width:900px){.polaroid{width:96px}.hero .frame{width:min(60%,200px)}}
 
-.booth__result {
-    position: sticky;
-    top: calc(var(--header-h) + 1.5rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.strip {
-    width: min(100%, 260px);
-    height: auto;
-    border-radius: 6px;
-    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
-}
+:root[data-theme=light] .lay[aria-pressed=true]::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E")}
 
-/* ---------- Templates ---------- */
-.tpl-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 2rem;
-}
-.tpl {
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-}
-.tpl__strip {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 12px 12px 0;
-    border-radius: 8px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    transition: transform 0.4s var(--ease);
-}
-.tpl:hover .tpl__strip {
-    transform: translateY(-8px) rotate(-1.5deg);
-}
-.tpl__strip img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-}
-.tpl__strip span {
-    display: grid;
-    place-items: center;
-    height: 54px;
-    font-family: var(--font-script);
-}
-.tpl__name {
-    font-size: 1.15rem;
-    font-weight: 600;
-}
+.cam #hint .btn{justify-self:center;width:auto;margin-top:.4rem}
+.cam #hint{justify-items:center}
 
-/* ---------- Album ---------- */
-.album-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 1.5rem;
-}
-.album-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    text-align: left;
-    font-size: 0.85rem;
-    color: var(--text-soft);
-}
-.album-item img {
-    width: 100%;
-    border-radius: 6px;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
-    transition: transform 0.35s var(--ease);
-}
-.album-item:hover img {
-    transform: translateY(-6px) scale(1.02);
-}
+/* === TOMBOL "MULAI FOTO" DI BERANDA: efek kilau + denyut (class .btn--glow di index.html) === */
+.btn--glow{position:relative;overflow:hidden;isolation:isolate;animation:ctaPulse 2.6s ease-in-out infinite}
+.btn--glow::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);translate:-120% 0;animation:ctaShine 3.2s ease-in-out infinite}
+@keyframes ctaPulse{0%,100%{box-shadow:0 12px 28px -14px rgba(124,58,237,.8),0 0 0 0 rgba(167,139,250,.6)}50%{box-shadow:0 12px 34px -10px rgba(147,51,234,.95),0 0 0 14px rgba(167,139,250,0)}}
+@keyframes ctaShine{0%,55%{translate:-120% 0}100%{translate:120% 0}}
+@media(prefers-reduced-motion:reduce){.btn--glow,.btn--glow::before{animation:none}}
+/* === HALAMAN TEMPLATE (langkah 2): kartu pratinjau bingkai === */
+.grp{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-soft);margin:1.2rem 0 .7rem}.grp:first-child{margin-top:0}
+.tplgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:.7rem}
+.tpl-tile{padding:.5rem;font-size:.78rem;font-weight:600;align-content:start}
+.tpl-ph{display:block;width:100%;aspect-ratio:1/2.6;border-radius:6px;background:var(--surface-2);animation:phpulse 1.2s ease-in-out infinite alternate}
+@keyframes phpulse{to{opacity:.5}}
+.tpl-cv{width:100%;height:auto;border-radius:4px;box-shadow:0 6px 14px -8px rgba(0,0,0,.6)}
+.sum-prev.tall{height:auto;max-height:420px;overflow:hidden;padding:.8rem}.sum-prev.tall canvas{max-width:100%;max-height:380px;width:auto;height:auto;border-radius:4px;box-shadow:var(--shadow)}
+.stepper{overflow-x:auto}.stepper li{min-width:0;white-space:nowrap}
+/* === TIMER & HITUNG MUNDUR DI KAMERA === */
+.camtimer{position:absolute;left:12px;top:12px;z-index:3;padding:.35rem .85rem;border-radius:99px;background:var(--bg);color:var(--text);border:1px solid var(--line-strong);font-size:.82rem;font-weight:700;opacity:.92;transition:transform .15s var(--ease)}
+.camtimer:active{transform:scale(.96)}.cam.busy .camtimer{display:none}
+.camstat{position:absolute;left:50%;top:12px;translate:-50% 0;z-index:3;padding:.3rem .9rem;border-radius:99px;background:var(--bg);color:var(--text);font-size:.82rem;font-weight:700;display:none}
+.cam.busy .camstat{display:block}
+#count{display:grid;place-items:center;opacity:0;animation:none!important;background:rgba(8,5,18,.28)}
+#count.on{opacity:1}
+#count .ring{position:absolute;width:min(46%,230px);rotate:-90deg;overflow:visible}
+#count .ring circle{fill:rgba(14,10,26,.45);stroke:#fff;stroke-width:6;stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:0}
+#count.on .ring circle{animation:ringDrain 1s linear forwards}
+@keyframes ringDrain{to{stroke-dashoffset:339.3}}
+#countNum{position:relative;font-size:clamp(4.5rem,15vw,8.5rem);line-height:1;font-weight:800;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.45)}
+#count.on #countNum{animation:numPop .9s var(--ease) both}
+@keyframes numPop{from{transform:scale(.6);opacity:0}30%{opacity:1}}
+@media(prefers-reduced-motion:reduce){#count.on #countNum,#count.on .ring circle{animation:none}}
+/* Tombol glow di hero: urutan animasi = muncul dulu (up), baru denyut terus-menerus (ctaPulse). Menimpa aturan .js .hero .btn--cta */
+.js .hero .btn--glow{animation:up .8s var(--ease) .24s both,ctaPulse 2.6s ease-in-out 1.2s infinite}
+@media(prefers-reduced-motion:reduce){.js .hero .btn--glow{animation:none}}
 
-.empty {
-    display: grid;
-    justify-items: center;
-    gap: 1.25rem;
-    padding: 4rem 0;
-    color: var(--text-soft);
-}
-.empty[hidden] {
-    display: none;
-}
+/* === [BAGIAN] TEMPLATE GAMBAR (langkah Template + halaman Templates) === */
+.grp-note{font-weight:500;text-transform:none;letter-spacing:0;color:var(--accent-text);margin-left:.4rem}
+.tpl-tile small{display:block;font-weight:500;color:var(--text-soft);font-size:.7rem}
+.tpl-up{display:grid;place-content:center;justify-items:center;gap:.2rem;border-style:dashed;min-height:150px;text-align:center}
+.tpl-plus{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--surface-2);font-size:1.4rem;line-height:1;color:var(--accent-text)}
+.chk{display:flex;align-items:flex-start;gap:.6rem;font-size:.88rem;color:var(--text-soft);cursor:pointer}
+.chk input{margin-top:.2rem;accent-color:var(--accent);width:1rem;height:1rem;flex:none}
+.chk b{color:var(--text)}
+.page__sub{font-size:1.4rem;margin:2.6rem 0 .3rem}
+#tiFilter{margin:0 0 1.2rem}
+.tpl-grid--img{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.tpl__img{display:grid;place-items:center;padding:.6rem;border-radius:10px;background:repeating-conic-gradient(var(--surface-2) 0 25%,var(--surface) 0 50%) 0 0/16px 16px}
+.tpl__img img{width:100%;height:auto;max-height:300px;object-fit:contain;border-radius:3px}
+/* grup Strip lebih lebar karena berisi 3 pilihan (Strip 2, 3, 4) */
+.lay-group:first-child{grid-column:1/-1}.lay-group:first-child .lay-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:560px){.lay-group:first-child .lay-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-.lightbox {
-    margin: auto;
-    padding: 1.5rem;
-    max-height: 92vh;
-    overflow: auto;
-    text-align: center;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    background: var(--bg);
-    color: var(--text);
-}
-.lightbox::backdrop {
-    background: rgba(5, 3, 15, 0.8);
-}
-.lightbox img {
-    max-height: 65vh;
-    margin: 0 auto;
-    border-radius: 6px;
-}
-.lightbox .booth__controls {
-    justify-content: center;
-    margin-bottom: 0;
-}
+/* [FITUR] kotak kosong bernomor di kartu halaman Templates (warna sama dengan pratinjau di langkah Template: lihat numberedCanvases) */
+.tpl__ph{display:grid;place-items:center;width:100%;aspect-ratio:4/3;border-radius:3px;background:#e6e0f7;color:#3b1d6e;font-weight:800;font-size:1.8rem;line-height:1}
 
-/* ---------- Login ---------- */
-.auth {
-    display: grid;
-    place-items: center;
-}
-.auth__card {
-    width: min(100%, 420px);
-    padding: 2rem;
-    border-radius: 24px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-}
-.tabs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.4rem;
-    padding: 0.3rem;
-    margin-bottom: 1.5rem;
-    border-radius: 999px;
-    background: var(--hover);
-}
-.tab {
-    padding: 0.6rem;
-    border-radius: 999px;
-    font-weight: 600;
-    color: var(--text-soft);
-    transition:
-        background 0.25s,
-        color 0.25s;
-}
-.tab.is-active {
-    background: var(--gradient);
-    color: #fff;
-}
+/* ===== rev14: katalog Templates — kartu bingkai polos per ukuran (1x1, 2x2, 3x2, 4x2) ===== */
+.tpl__img{background:transparent} /* tanpa kotak-kotak latar: hanya bingkai */
+.chip small{margin-left:.3rem;opacity:.7;font-size:.72rem}
+.tpl-grid--plain{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.tpl__strip--grid{grid-template-columns:repeat(var(--c),1fr);align-content:start;font:700 .7rem var(--font-main)}
+.tpl__strip--grid .tpl__ph{font-size:1.1rem}
+.tpl__strip--grid .tpl__brand{grid-column:1/-1;padding:.2rem 0}
 
-.field {
-    display: block;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-soft);
-}
-.field[hidden] {
-    display: none;
-}
-.field input {
-    width: 100%;
-    margin-top: 0.4rem;
-    padding: 0.85rem 1rem;
-    border-radius: 14px;
-    border: 1px solid var(--line-strong);
-    background: var(--surface);
-    font: inherit;
-    color: var(--text);
-}
-.field input::placeholder {
-    color: var(--text-soft);
-    opacity: 0.7;
-}
-.field input:focus {
-    outline: none;
-    border-color: var(--pink);
-    box-shadow: 0 0 0 3px rgba(255, 111, 177, 0.25);
-}
-.form-error {
-    min-height: 1.4em;
-    margin-bottom: 0.5rem;
-    color: var(--error);
-    font-size: 0.9rem;
-}
-.note {
-    margin-top: 1.25rem;
-    font-size: 0.8rem;
-    color: var(--text-soft);
-    text-align: center;
-}
+/* ===== rev14: foto bersama (room) — halaman teman (#v-join) + catatan room ===== */
+body[data-view=join] .stepper{display:none}
+.join{max-width:520px;margin-inline:auto;display:grid;gap:.8rem}
+#jhint{position:absolute;inset:0;display:grid;place-content:center;gap:.4rem;text-align:center;padding:1.2rem;background:var(--surface);color:var(--text-soft)}
+#jflash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .08s}#jflash.on{opacity:.95}
+#jcount{position:absolute;inset:0;display:grid;place-items:center;opacity:0;pointer-events:none;background:rgba(8,5,18,.28)}
+#jcount.on{opacity:1}
+#jcount .ring{position:absolute;width:min(46%,230px);rotate:-90deg;overflow:visible}
+#jcount .ring circle{fill:rgba(14,10,26,.45);stroke:#fff;stroke-width:6;stroke-linecap:round;stroke-dasharray:339.3;stroke-dashoffset:0}
+#jcount.on .ring circle{animation:ringDrain 1s linear forwards}
+#jcountNum{position:relative;font-size:clamp(4.5rem,15vw,8.5rem);line-height:1;font-weight:800;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.45)}
+#btnInvite:disabled{opacity:.5;cursor:not-allowed}
+.roomnote{margin-top:-.2rem}
 
-/* ---------- Responsif ---------- */
-@media (max-width: 900px) {
-    .booth {
-        grid-template-columns: 1fr;
-    }
-    .booth__result {
-        position: static;
-    }
-    .steps {
-        grid-template-columns: 1fr;
-    }
-}
+/* ===== rev14: langkah-langkah photobooth (Pilih, Template, Jepret, Hias, Simpan) dibuat lebih ringkas ===== */
+.page.flow{padding-top:clamp(1rem,2.2vw,1.5rem);padding-bottom:2.5rem;max-width:1040px}
+.stepper{gap:.3rem;margin-bottom:.9rem}
+.stepper li{padding:.3rem .55rem;gap:.4rem;font-size:.78rem;border-radius:999px}
+.stepper b{width:19px;height:19px;font-size:.66rem}
+.pagehead{margin-bottom:.9rem}
+.pagehead h1{font-size:clamp(1.3rem,2.4vw,1.7rem);line-height:1.2}
+.pagehead p{font-size:.85rem;margin-top:.2rem;max-width:44rem}
+.card{padding:.9rem}
+.setup{grid-template-columns:minmax(0,1fr) 270px;gap:.9rem}
+.lays{gap:.8rem}
+.lay-group h3{margin-bottom:.4rem}
+.lay-row{gap:.5rem}
+.lay{min-height:0;padding:.55rem .4rem .5rem;border-radius:12px}
+.lp{height:78px;margin-bottom:.2rem}
+.lay b{font-size:.82rem}.lay small{font-size:.7rem}
+.lay[aria-pressed=true]::after{width:16px;height:16px;right:6px;top:6px;background-size:11px}
+.summary{gap:.6rem}
+.sum-prev{height:130px;padding:.5rem}
+.summary h2{font-size:1.05rem}
+.summary .btn{padding-block:.6rem}
+.sum-prev.tall{max-height:300px}.sum-prev.tall canvas{max-height:270px}
+.tplgrid{grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:.5rem}
+.tpl-tile{padding:.35rem;font-size:.72rem}
+.grp{margin:.9rem 0 .5rem}
+.shoot{gap:.9rem}
+.actions{margin-top:1rem}
+.opts{max-height:40vh}
+.results{gap:.8rem}.gifbox{min-height:160px}.gifbox img{max-height:300px}
+@media(max-width:900px){.setup{grid-template-columns:minmax(0,1fr)}.lp{height:70px}}
 
-/* ---------- Footer: tautan antar halaman ---------- */
-.footer__info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-}
-.footer__nav {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.4rem 1.5rem;
-}
-.footer__nav a {
-    transition: color 0.25s;
-}
-.footer__nav a:hover {
-    color: var(--text);
-}
+/* ===== rev14: Login dengan Google ===== */
+.auth__google{display:grid;justify-items:center;gap:.4rem;margin-bottom:.9rem}
+.auth__google .form-error{min-height:0;text-align:center}
+.btn--google{max-width:400px}
+.auth__or{display:flex;align-items:center;gap:.8rem;margin:.2rem 0 1rem;color:var(--text-soft);font-size:.8rem}
+.auth__or::before,.auth__or::after{content:"";flex:1;height:1px;background:var(--line-strong)}
 
-/* =========================================================
-   REV3 — Pop-up, tutorial, fitur terkunci, limit unduhan
-   ========================================================= */
-[hidden] {
-    display: none !important;
-}
-.center {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem;
-}
-.btn--sm {
-    padding: 0.45rem 1.1rem;
-    font-size: 0.8rem;
-}
-.steps {
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-}
+/* rev14: kartu katalog lebih rapi (nama + ukuran bertumpuk, tombol satu baris) */
+.tpl-grid--img .tpl{padding:.7rem;gap:.6rem}
+.tpl-grid--img .tpl__name{display:grid;gap:.1rem;font-size:.98rem}
+.tpl-grid--img .btn{padding:.5rem .6rem;font-size:.82rem;white-space:nowrap}
 
-/* ---------- Modal / pop-up ---------- */
-.modal {
-    width: min(92vw, 420px);
-    margin: auto;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--text);
-    overflow: visible;
-}
-.modal::backdrop {
-    background: rgba(5, 3, 15, 0.72);
-    backdrop-filter: blur(6px);
-}
-.modal[open] {
-    animation: modal-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.modal__box {
-    position: relative;
-    padding: 2.25rem 1.75rem 1.5rem;
-    overflow: hidden;
-    text-align: center;
-    border: 1px solid var(--line);
-    border-radius: 28px;
-    background: var(--bg);
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.5),
-        0 0 60px rgba(255, 111, 177, 0.25);
-}
-.modal__box::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto;
-    height: 6px;
-    background: var(--gradient);
-}
-.modal__icon {
-    display: grid;
-    place-items: center;
-    width: 84px;
-    height: 84px;
-    margin: 0 auto 1.1rem;
-    border-radius: 28px;
-    background: var(--gradient);
-    font-size: 2.6rem;
-    box-shadow: 0 12px 30px rgba(255, 111, 177, 0.45);
-    animation: icon-wiggle 2.6s ease-in-out infinite;
-}
-.modal__title {
-    font-size: 1.5rem;
-    font-weight: 800;
-    line-height: 1.2;
-}
-.modal__text {
-    margin-top: 0.6rem;
-    color: var(--text-soft);
-}
-.modal__actions {
-    display: grid;
-    gap: 0.6rem;
-    margin-top: 1.6rem;
-}
+/* ===== rev15 ===== */
+/* Kotak kamera mengikuti rasio kamera (var --ar diisi photobooth.js) dan tidak lebih tinggi dari layar */
+.cam{aspect-ratio:var(--ar,1.7778)}
+.shoot .cam{width:min(100%,calc((100vh - 18rem) * var(--ar,1.7778)));min-width:260px;margin-inline:auto}
+/* Pratinjau template langsung di langkah Jepret */
+.live{display:grid;justify-items:center}
+.livewrap{position:relative;display:inline-block;line-height:0;max-width:100%}
+#liveCv{display:block;max-width:100%;max-height:calc(100vh - 33rem);min-height:130px;width:auto;height:auto;border-radius:4px;box-shadow:var(--shadow);background:var(--surface-2)}
+#liveBtns .rt{right:auto;width:30px;height:30px;font-size:1.05rem;line-height:1;transform:translate(-115%,15%);background:var(--bg);color:var(--text);border:1px solid var(--line-strong);box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;display:grid;place-items:center}
+#liveBtns .rt:hover{background:var(--accent);color:var(--on-accent)}
+/* Tombol Kembali/Lanjut selalu terlihat: bar bawah menempel di layar, pengguna tidak perlu scroll */
+.flow .view>.actions{position:sticky;bottom:0;z-index:20;margin-top:.6rem;padding:.7rem 0 .5rem;background:linear-gradient(to bottom,transparent,var(--bg) 30%)}
+.side{gap:.6rem}
+.shoot .card.side{padding:.8rem}
 
-@keyframes modal-pop {
-    from {
-        opacity: 0;
-        transform: translateY(24px) scale(0.88);
-    }
-}
-@keyframes icon-wiggle {
-    0%,
-    100% {
-        rotate: -5deg;
-    }
-    50% {
-        rotate: 6deg;
-    }
-}
-
-/* ---------- Tutorial (newcomer) ---------- */
-.tour__skip {
-    position: absolute;
-    top: 1rem;
-    right: 1.1rem;
-    padding: 0.25rem 0.6rem;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    color: var(--text-soft);
-}
-.tour__skip:hover {
-    background: var(--hover);
-    color: var(--text);
-}
-.tour__emoji.is-pop {
-    animation: emoji-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.tour .modal__text {
-    min-height: 4.8em;
-}
-.tour__dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.45rem;
-    margin-top: 1.25rem;
-}
-.tour__dots i {
-    width: 8px;
-    height: 8px;
-    border-radius: 99px;
-    background: var(--line-strong);
-    transition:
-        width 0.3s var(--ease),
-        background 0.3s;
-}
-.tour__dots i.is-on {
-    width: 26px;
-    background: var(--gradient);
-}
-.tour__count {
-    margin-top: 0.6rem;
-    font-size: 0.8rem;
-    color: var(--text-soft);
-}
-.tour__actions {
-    display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 0.6rem;
-    margin-top: 1.25rem;
-}
-
-@keyframes emoji-pop {
-    from {
-        transform: scale(0.4) rotate(-20deg);
-        opacity: 0;
-    }
-}
-
-/* ---------- Fitur terkunci (guest) ---------- */
-.is-locked {
-    cursor: not-allowed;
-    opacity: 0.65;
-}
-.nav__link.is-locked:hover {
-    color: var(--text-soft);
-}
-.lock-ico {
-    margin-right: 0.4rem;
-    vertical-align: -2px;
-    flex: none;
-}
-
-.locked {
-    display: grid;
-    justify-items: center;
-    gap: 1rem;
-    padding: 3.5rem 1rem;
-    text-align: center;
-}
-.locked p {
-    color: var(--text-soft);
-    max-width: 26rem;
-}
-.locked__icon {
-    display: grid;
-    place-items: center;
-    width: 96px;
-    height: 96px;
-    border-radius: 30px;
-    background: var(--gradient);
-    font-size: 3rem;
-    box-shadow: 0 14px 36px rgba(255, 111, 177, 0.4);
-    animation: icon-wiggle 2.6s ease-in-out infinite;
-}
-
-/* ---------- Limit unduhan ---------- */
-.hint {
-    flex-basis: 100%;
-    margin: 0;
-    font-size: 0.85rem;
-    text-align: center;
-    color: var(--text-soft);
-}
-.btn--cta.is-locked {
-    background: transparent;
-    color: var(--text);
-    border: 1px dashed var(--pink);
-    box-shadow: none;
-    opacity: 1;
-}
-#downloadBtn[data-state="low"] {
-    animation: nudge 1.6s ease-in-out infinite;
-}
-@keyframes nudge {
-    50% {
-        transform: scale(1.05);
-    }
-}
-
-/* ---------- Photobooth: header halaman, chip, bingkai baru ---------- */
-.booth__head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-}
-.chip__meta {
-    opacity: 0.6;
-    font-size: 0.72rem;
-}
-.chip .dot {
-    background-size: cover;
-    background-position: center;
-}
-
-.tpl {
-    position: relative;
-}
-.tpl__strip {
-    position: relative;
-}
-.tpl__strip--photo img {
-    border: 4px solid #fff;
-    border-radius: 12px;
-}
-.tpl__new {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    padding: 0.25rem 0.7rem;
-    border-radius: 999px;
-    background: var(--yellow);
-    color: #0d0a22;
-    font-size: 0.75rem;
-    rotate: 10deg;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
-}
-.tpl__name small {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: var(--text-soft);
-}
+.shoot .side .bar2{margin-top:-.2rem}
+.shoot .side .between h2{font-size:1.15rem}
+.shoot .side .btn--cta{padding-block:.65rem}
+.shoot .roomnote{margin:0}
